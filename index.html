@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Quiz de Geografia</title>
-<meta name="description" content="Quiz de Geografia com ranking da turma.">
+<title>Simulados da turma</title>
+<meta name="description" content="Simulados com ranking da turma.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -65,23 +65,45 @@ h2{font-size:22px;margin-bottom:4px}
 .cabeca{text-align:center;margin-bottom:22px}
 .cabeca h1{margin-bottom:6px}
 .rotulo{display:block;font-weight:700;font-size:15px;margin-bottom:8px}
-.turmas{display:grid;gap:10px;margin-bottom:20px}
-.turma{
+.rotulo-espaco{margin-top:22px}
+.quizzes{display:grid;gap:10px}
+.quiz{
   display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
   background:#fff;border:2px solid var(--linha);border-radius:var(--raio);
-  padding:14px 16px;font-family:inherit;font-size:16px;color:inherit;
+  padding:13px 15px;font-family:inherit;font-size:16px;color:inherit;
   transition:border-color .15s, background .15s;
 }
-.turma:hover{border-color:var(--tinta)}
-.turma[aria-pressed="true"]{border-color:var(--marca);background:var(--marca-fundo)}
-.turma-selo{
+.quiz:hover{border-color:var(--tinta)}
+.quiz[aria-pressed="true"]{border-color:var(--marca);background:var(--marca-fundo)}
+.quiz-selo{
   width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;
   font-family:"Baloo 2",sans-serif;font-weight:800;font-size:15px;color:#fff;background:var(--marca);
 }
-.turma-nome{font-weight:700;display:block}
-.turma-tema{font-size:14px;color:var(--tinta-fraca)}
-.turma[data-cor="verde"]{--marca:#2E7D32;--marca-fundo:#E8F5E9}
-.turma[data-cor="roxo"]{--marca:#6A1B9A;--marca-fundo:#F3E5F5}
+.quiz-txt{min-width:0}
+.quiz-materia{
+  display:block;font-size:11px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--marca);
+}
+.quiz-nome{display:block;font-weight:700;line-height:1.25}
+.quiz-turma{font-size:14px;color:var(--tinta-fraca)}
+.quiz[data-cor="verde"]{--marca:#2E7D32;--marca-fundo:#E8F5E9}
+.quiz[data-cor="roxo"]{--marca:#6A1B9A;--marca-fundo:#F3E5F5}
+
+.anteriores{margin-top:12px;border-top:1px dashed var(--linha);padding-top:12px}
+.anteriores summary{
+  cursor:pointer;font-weight:700;font-size:14px;color:var(--tinta-fraca);
+  list-style:none;display:flex;align-items:center;gap:7px;
+}
+.anteriores summary::-webkit-details-marker{display:none}
+.anteriores summary::before{content:"›";font-size:19px;line-height:1;transition:transform .15s}
+.anteriores[open] summary::before{transform:rotate(90deg)}
+.anteriores summary:hover{color:var(--tinta)}
+.anteriores .quizzes{margin-top:12px}
+
+.link{
+  background:none;border:none;padding:0;font-family:inherit;font-size:14px;font-weight:700;
+  color:var(--tema-escuro);text-decoration:underline;cursor:pointer;margin-top:12px;
+}
 
 input[type="text"]{
   width:100%;font-family:inherit;font-size:17px;color:inherit;
@@ -194,16 +216,23 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   <!-- ============ TELA 1: INICIO ============ -->
   <section class="tela ativa" id="tela-inicio">
     <div class="cabeca">
-      <p class="olho">Simulado da turma</p>
-      <h1>Quiz de Geografia</h1>
-      <p class="apoio">20 perguntas. Acerte o máximo que puder e entre no ranking.</p>
+      <p class="olho">Estudar para a prova</p>
+      <h1>Simulados da turma</h1>
+      <p class="apoio" id="sub-home">Escolha um simulado, escreva seu nome e entre no ranking.</p>
     </div>
 
     <div class="cartao">
-      <span class="rotulo">Escolha o seu quiz</span>
-      <div class="turmas" id="turmas"></div>
+      <span class="rotulo">Escolha o seu simulado</span>
+      <div class="quizzes" id="lista-ativos"></div>
 
-      <label class="rotulo" for="nome">Seu nome</label>
+      <details class="anteriores" id="box-anteriores" hidden>
+        <summary>Provas anteriores</summary>
+        <div class="quizzes" id="lista-anteriores"></div>
+      </details>
+
+      <button type="button" class="link" id="btn-todos" hidden>Ver todos os simulados</button>
+
+      <label class="rotulo rotulo-espaco" for="nome">Seu nome</label>
       <input type="text" id="nome" maxlength="18" autocomplete="off"
              placeholder="Ex.: Giovanna" spellcheck="false">
       <p class="dica">Use só o primeiro nome ou um apelido — ele vai aparecer no ranking.</p>
@@ -218,7 +247,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   <!-- ============ TELA 2: QUIZ ============ -->
   <section class="tela" id="tela-quiz">
     <div class="barra-topo">
-      <span id="contador">Pergunta 1 de 20</span>
+      <span id="contador">Pergunta 1</span>
       <span id="placar-atual">0 acertos</span>
     </div>
     <div class="trilho"><div class="progresso" id="progresso"></div></div>
@@ -268,15 +297,22 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 </main>
 
 <script src="config.js"></script>
-<script src="perguntas.js"></script>
+<script src="catalogo.js"></script>
 <script>
 (function(){
   "use strict";
 
+  // ---------------- banco de perguntas ----------------
+  // Cada arquivo da pasta perguntas/ se registra aqui ao ser carregado.
+  var BANCO = {};
+  var carregados = {};
+  window.registrarPerguntas = function(id, lista){ BANCO[id] = lista; };
+
   var estado = {
-    quiz: null, chave: null, nome: "",
+    item: null, nome: "",
     perguntas: [], indice: 0, acertos: 0,
-    inicio: 0, segundos: 0, respondida: false
+    inicio: 0, segundos: 0, respondida: false,
+    filtro: null
   };
 
   var el = function(id){ return document.getElementById(id); };
@@ -285,6 +321,13 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   function mostrar(id){
     telas.forEach(function(t){ el(t).classList.toggle("ativa", t === id); });
     window.scrollTo(0,0);
+  }
+
+  function acharPorId(id){
+    for (var i = 0; i < CATALOGO.length; i++){
+      if (CATALOGO[i].id === id) return CATALOGO[i];
+    }
+    return null;
   }
 
   function configurado(){
@@ -306,56 +349,120 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     return m > 0 ? m + "min " + r + "s" : r + "s";
   }
 
-  // ---------------- tela inicial ----------------
-  function montarTurmas(){
-    var caixa = el("turmas");
-    Object.keys(QUIZZES).forEach(function(chave){
-      var q = QUIZZES[chave];
-      var b = document.createElement("button");
-      b.className = "turma";
-      b.type = "button";
-      b.dataset.cor = q.cor;
-      b.dataset.chave = chave;
-      b.setAttribute("aria-pressed", "false");
+  // ---------------- menu ----------------
+  function cartaoQuiz(item){
+    var b = document.createElement("button");
+    b.className = "quiz";
+    b.type = "button";
+    b.dataset.cor = item.cor;
+    b.dataset.id = item.id;
+    b.setAttribute("aria-pressed", String(estado.item && estado.item.id === item.id));
 
-      var selo = document.createElement("span");
-      selo.className = "turma-selo";
-      selo.textContent = q.turma.replace(" ano", "º");
+    var selo = document.createElement("span");
+    selo.className = "quiz-selo";
+    selo.textContent = item.turma.replace(" ano", "º");
 
-      var txt = document.createElement("span");
-      var n = document.createElement("strong");
-      n.className = "turma-nome";
-      n.textContent = q.turma;
-      var t = document.createElement("span");
-      t.className = "turma-tema";
-      t.textContent = q.titulo;
-      txt.appendChild(n); txt.appendChild(t);
+    var txt = document.createElement("span");
+    txt.className = "quiz-txt";
 
-      b.appendChild(selo); b.appendChild(txt);
-      b.addEventListener("click", function(){ escolherTurma(chave); });
-      caixa.appendChild(b);
+    var m = document.createElement("span");
+    m.className = "quiz-materia";
+    m.textContent = item.materia;
+
+    var n = document.createElement("strong");
+    n.className = "quiz-nome";
+    n.textContent = item.titulo;
+
+    var t = document.createElement("span");
+    t.className = "quiz-turma";
+    t.textContent = item.turma;
+
+    txt.appendChild(m); txt.appendChild(n); txt.appendChild(t);
+    b.appendChild(selo); b.appendChild(txt);
+    b.addEventListener("click", function(){ escolherQuiz(item); });
+    return b;
+  }
+
+  function montarMenu(){
+    var caixaA = el("lista-ativos");
+    var caixaB = el("lista-anteriores");
+    caixaA.textContent = "";
+    caixaB.textContent = "";
+
+    // link direto: mostra so aquele simulado
+    if (estado.filtro){
+      caixaA.appendChild(cartaoQuiz(estado.filtro));
+      el("box-anteriores").hidden = true;
+      el("btn-todos").hidden = false;
+      return;
+    }
+
+    var ativos = CATALOGO.filter(function(q){ return q.ativo !== false; });
+    var antigos = CATALOGO.filter(function(q){ return q.ativo === false; });
+
+    if (!ativos.length && !antigos.length){
+      var vazio = document.createElement("p");
+      vazio.className = "vazio";
+      vazio.textContent = "Nenhum simulado disponível no momento.";
+      caixaA.appendChild(vazio);
+    }
+
+    ativos.forEach(function(q){ caixaA.appendChild(cartaoQuiz(q)); });
+    antigos.forEach(function(q){ caixaB.appendChild(cartaoQuiz(q)); });
+
+    el("box-anteriores").hidden = !antigos.length;
+    el("btn-todos").hidden = true;
+  }
+
+  function marcarSelecionado(){
+    Array.prototype.forEach.call(document.querySelectorAll(".quiz"), function(b){
+      b.setAttribute("aria-pressed",
+        String(!!estado.item && b.dataset.id === estado.item.id));
     });
   }
 
-  function escolherTurma(chave){
-    estado.chave = chave;
-    estado.quiz = QUIZZES[chave];
-    document.body.dataset.tema = estado.quiz.cor;
-    Array.prototype.forEach.call(document.querySelectorAll(".turma"), function(b){
-      b.setAttribute("aria-pressed", String(b.dataset.chave === chave));
+  function carregarPerguntas(item, pronto){
+    if (BANCO[item.id]) { pronto(true); return; }
+    if (carregados[item.id]) { pronto(false); return; }
+    carregados[item.id] = true;
+    var s = document.createElement("script");
+    s.src = item.arquivo;
+    s.onload = function(){ pronto(!!BANCO[item.id]); };
+    s.onerror = function(){ pronto(false); };
+    document.body.appendChild(s);
+  }
+
+  function escolherQuiz(item){
+    estado.item = item;
+    document.body.dataset.tema = item.cor;
+    marcarSelecionado();
+    el("btn-comecar").disabled = true;
+    el("sub-home").textContent = "Carregando as perguntas…";
+
+    carregarPerguntas(item, function(ok){
+      if (!ok){
+        el("sub-home").textContent =
+          "Não deu para carregar as perguntas deste simulado. Tente atualizar a página.";
+        estado.item = null;
+        marcarSelecionado();
+        return;
+      }
+      el("sub-home").textContent =
+        item.materia + " · " + BANCO[item.id].length + " perguntas · " + item.turma;
+      validar();
     });
-    validar();
   }
 
   function validar(){
-    var ok = !!estado.chave && el("nome").value.trim().length >= 2;
-    el("btn-comecar").disabled = !ok;
+    var pronto = !!estado.item && !!BANCO[estado.item.id] &&
+                 el("nome").value.trim().length >= 2;
+    el("btn-comecar").disabled = !pronto;
   }
 
   // ---------------- quiz ----------------
   function comecar(){
     estado.nome = el("nome").value.trim().replace(/\s+/g, " ").slice(0, 18);
-    estado.perguntas = embaralhar(estado.quiz.perguntas).map(function(p){
+    estado.perguntas = embaralhar(BANCO[estado.item.id]).map(function(p){
       var ordem = embaralhar([0,1,2,3]);
       return {
         p: p.p,
@@ -492,7 +599,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       headers: cabecalhos({ "Prefer": "return=minimal" }),
       body: JSON.stringify({
         nome: estado.nome,
-        quiz: estado.chave,
+        quiz: estado.item.id,
         acertos: estado.acertos,
         total: estado.perguntas.length,
         segundos: estado.segundos
@@ -504,10 +611,10 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     });
   }
 
-  function carregarRanking(chave){
-    var quiz = QUIZZES[chave];
-    document.body.dataset.tema = quiz.cor;
-    el("rank-turma").textContent = quiz.turma + " · " + quiz.titulo;
+  function carregarRanking(item){
+    if (!item) return;
+    document.body.dataset.tema = item.cor;
+    el("rank-turma").textContent = item.materia + " · " + item.titulo + " · " + item.turma;
 
     var lista = el("lista-ranking");
     lista.textContent = "";
@@ -527,7 +634,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     }
 
     var url = CONFIG.SUPABASE_URL + "/rest/v1/placar" +
-      "?quiz=eq." + encodeURIComponent(chave) +
+      "?quiz=eq." + encodeURIComponent(item.id) +
       "&select=nome,acertos,total,segundos" +
       "&order=acertos.desc,segundos.asc" +
       "&limit=300";
@@ -591,16 +698,40 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     });
   }
 
-  // ---------------- ligacoes ----------------
-  montarTurmas();
+  // ---------------- inicio ----------------
+  function lerLinkDireto(){
+    var busca = window.location.search || "";
+    var m = busca.match(/[?&]q=([^&]+)/);
+    if (!m) return;
+    var item = acharPorId(decodeURIComponent(m[1]));
+    if (item){
+      estado.filtro = item;
+      montarMenu();
+      escolherQuiz(item);
+    }
+  }
+
+  function quizPadrao(){
+    if (estado.item) return estado.item;
+    if (estado.filtro) return estado.filtro;
+    var ativos = CATALOGO.filter(function(q){ return q.ativo !== false; });
+    return ativos[0] || CATALOGO[0] || null;
+  }
+
+  montarMenu();
+  lerLinkDireto();
+
   el("nome").addEventListener("input", validar);
   el("btn-comecar").addEventListener("click", comecar);
   el("btn-proxima").addEventListener("click", proxima);
-  el("btn-ranking").addEventListener("click", function(){ carregarRanking(estado.chave); });
+  el("btn-ranking").addEventListener("click", function(){ carregarRanking(estado.item); });
   el("btn-denovo").addEventListener("click", function(){ comecar(); });
   el("btn-voltar").addEventListener("click", function(){ mostrar("tela-inicio"); });
-  el("btn-ver-ranking").addEventListener("click", function(){
-    carregarRanking(estado.chave || Object.keys(QUIZZES)[0]);
+  el("btn-ver-ranking").addEventListener("click", function(){ carregarRanking(quizPadrao()); });
+  el("btn-todos").addEventListener("click", function(){
+    estado.filtro = null;
+    montarMenu();
+    el("btn-todos").hidden = true;
   });
 })();
 </script>
