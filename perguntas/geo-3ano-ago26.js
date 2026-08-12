@@ -1,9 +1,10 @@
 // ============================================================
 //  3º ANO - CAMPO, CIDADE E PAISAGENS
-//  id: geo-3ano-ago26
+//  id: geo-3ano-ago26   |   50 perguntas no banco
 //
 //  "correta" e o numero da alternativa certa, comecando do ZERO:
 //  0 = primeira, 1 = segunda, 2 = terceira, 3 = quarta.
+//  O site sorteia e embaralha, entao a ordem daqui nao importa.
 // ============================================================
 
 registrarPerguntas("geo-3ano-ago26", [
@@ -246,6 +247,366 @@ registrarPerguntas("geo-3ano-ago26", [
       "Quem vive no campo não usa produtos industrializados",
     ],
     correta: 2,
+  },
+
+  // ---- 21 ----
+  {
+    p: "O que é a monocultura?",
+    alt: [
+      "O cultivo de um único tipo de planta em uma grande área",
+      "A criação de vários animais no mesmo pasto",
+      "A coleta de frutas na floresta",
+      "A venda de produtos na feira",
+    ],
+    correta: 0,
+  },
+
+  // ---- 22 ----
+  {
+    p: "A agricultura feita em pequenas propriedades, com o trabalho da própria família, é chamada de agricultura:",
+    alt: [
+      "Familiar",
+      "Comercial",
+      "Industrial",
+      "De exportação",
+    ],
+    correta: 0,
+  },
+
+  // ---- 23 ----
+  {
+    p: "Quando a família planta apenas o necessário para o próprio consumo, temos a agricultura de:",
+    alt: [
+      "Subsistência",
+      "Exportação",
+      "Mercado",
+      "Precisão",
+    ],
+    correta: 0,
+  },
+
+  // ---- 24 ----
+  {
+    p: "Para que serve a irrigação na lavoura?",
+    alt: [
+      "Para levar água até as plantações",
+      "Para adubar o solo",
+      "Para espantar as pragas",
+      "Para colher mais rápido",
+    ],
+    correta: 0,
+  },
+
+  // ---- 25 ----
+  {
+    p: "Para que serve o arado no espaço rural?",
+    alt: [
+      "Para revolver a terra antes do plantio",
+      "Para ordenhar as vacas",
+      "Para armazenar os grãos",
+      "Para transportar a colheita",
+    ],
+    correta: 0,
+  },
+
+  // ---- 26 ----
+  {
+    p: "Qual é um problema causado pelo uso exagerado de agrotóxicos?",
+    alt: [
+      "A contaminação do solo e da água",
+      "O aumento das chuvas",
+      "A melhora da qualidade do ar",
+      "O crescimento das florestas",
+    ],
+    correta: 0,
+  },
+
+  // ---- 27 ----
+  {
+    p: "O desmatamento para abrir novas áreas de plantio provoca:",
+    alt: [
+      "A perda da vegetação e da moradia dos animais",
+      "O aumento do número de nascentes",
+      "O crescimento das matas nativas",
+      "O surgimento de novas espécies",
+    ],
+    correta: 0,
+  },
+
+  // ---- 28 ----
+  {
+    p: "Como se chama o desgaste do solo provocado pela chuva e pelo vento quando a terra fica sem vegetação?",
+    alt: [
+      "Erosão",
+      "Irrigação",
+      "Adubação",
+      "Colheita",
+    ],
+    correta: 0,
+  },
+
+  // ---- 29 ----
+  {
+    p: "Para que serve o adubo?",
+    alt: [
+      "Para deixar o solo mais rico em nutrientes para as plantas",
+      "Para deixar o solo mais seco",
+      "Para espantar os pássaros",
+      "Para endurecer a terra",
+    ],
+    correta: 0,
+  },
+
+  // ---- 30 ----
+  {
+    p: "A retirada do látex das seringueiras é um exemplo de extrativismo:",
+    alt: [
+      "Vegetal",
+      "Mineral",
+      "Animal",
+      "Industrial",
+    ],
+    correta: 0,
+  },
+
+  // ---- 31 ----
+  {
+    p: "A retirada de minério de ferro e de ouro do subsolo é um exemplo de extrativismo:",
+    alt: [
+      "Mineral",
+      "Vegetal",
+      "Animal",
+      "Familiar",
+    ],
+    correta: 0,
+  },
+
+  // ---- 32 ----
+  {
+    p: "A pesca nos rios e no mar é um exemplo de extrativismo:",
+    alt: [
+      "Animal",
+      "Vegetal",
+      "Mineral",
+      "Urbano",
+    ],
+    correta: 0,
+  },
+
+  // ---- 33 ----
+  {
+    p: "Como se chama a criação de galinhas para obter carne e ovos?",
+    alt: [
+      "Avicultura",
+      "Suinocultura",
+      "Apicultura",
+      "Piscicultura",
+    ],
+    correta: 0,
+  },
+
+  // ---- 34 ----
+  {
+    p: "E a criação de porcos, como se chama?",
+    alt: [
+      "Suinocultura",
+      "Avicultura",
+      "Apicultura",
+      "Bovinocultura",
+    ],
+    correta: 0,
+  },
+
+  // ---- 35 ----
+  {
+    p: "A criação de abelhas, que produz o mel, chama-se:",
+    alt: [
+      "Apicultura",
+      "Piscicultura",
+      "Avicultura",
+      "Horticultura",
+    ],
+    correta: 0,
+  },
+
+  // ---- 36 ----
+  {
+    p: "A criação de peixes em tanques e açudes chama-se:",
+    alt: [
+      "Piscicultura",
+      "Apicultura",
+      "Avicultura",
+      "Suinocultura",
+    ],
+    correta: 0,
+  },
+
+  // ---- 37 ----
+  {
+    p: "O que é uma matéria-prima?",
+    alt: [
+      "O material retirado da natureza que será transformado em outro produto",
+      "O produto pronto vendido no supermercado",
+      "O dinheiro usado para comprar a produção",
+      "A máquina usada dentro da fábrica",
+    ],
+    correta: 0,
+  },
+
+  // ---- 38 ----
+  {
+    p: "O algodão colhido na lavoura é a matéria-prima de qual produto?",
+    alt: [
+      "Tecidos e roupas",
+      "Papel",
+      "Aço",
+      "Vidro",
+    ],
+    correta: 0,
+  },
+
+  // ---- 39 ----
+  {
+    p: "A cana-de-açúcar é usada principalmente para produzir:",
+    alt: [
+      "Açúcar e etanol",
+      "Farinha de trigo",
+      "Óleo de soja",
+      "Manteiga",
+    ],
+    correta: 0,
+  },
+
+  // ---- 40 ----
+  {
+    p: "O que é a agroindústria?",
+    alt: [
+      "A indústria que transforma os produtos do campo em alimentos e outros produtos",
+      "A loja que vende sementes ao agricultor",
+      "O transporte da colheita até a cidade",
+      "A escola que ensina técnicas de plantio",
+    ],
+    correta: 0,
+  },
+
+  // ---- 41 ----
+  {
+    p: "A fábrica que transforma o trigo em farinha é uma indústria:",
+    alt: [
+      "De transformação",
+      "Extrativa",
+      "De mineração",
+      "De serviços",
+    ],
+    correta: 0,
+  },
+
+  // ---- 42 ----
+  {
+    p: "O uso de tratores e colheitadeiras no campo trouxe como principal mudança:",
+    alt: [
+      "Mais rapidez e maior quantidade de produção",
+      "Mais trabalho feito com as mãos",
+      "Mais tempo gasto na colheita",
+      "Menos alimentos produzidos",
+    ],
+    correta: 0,
+  },
+
+  // ---- 43 ----
+  {
+    p: "Qual destes motivos leva as pessoas a deixarem o campo e irem morar na cidade?",
+    alt: [
+      "A busca por emprego, escolas e hospitais",
+      "A falta de espaço nas cidades",
+      "O excesso de transporte no campo",
+      "A vontade de plantar mais",
+    ],
+    correta: 0,
+  },
+
+  // ---- 44 ----
+  {
+    p: "As atividades de comércio e de serviços são mais comuns:",
+    alt: [
+      "No espaço urbano",
+      "No espaço rural",
+      "Nas florestas",
+      "Nos rios",
+    ],
+    correta: 0,
+  },
+
+  // ---- 45 ----
+  {
+    p: "O hospital, a escola e o transporte coletivo são exemplos de:",
+    alt: [
+      "Serviços",
+      "Matérias-primas",
+      "Indústrias extrativas",
+      "Atividades agrícolas",
+    ],
+    correta: 0,
+  },
+
+  // ---- 46 ----
+  {
+    p: "Qual destas paisagens é típica do espaço urbano?",
+    alt: [
+      "Ruas asfaltadas, prédios e lojas",
+      "Pastos e currais",
+      "Plantações de milho",
+      "Seringueiras e castanheiras",
+    ],
+    correta: 0,
+  },
+
+  // ---- 47 ----
+  {
+    p: "O que é o saneamento básico?",
+    alt: [
+      "O serviço de água tratada, esgoto e coleta de lixo",
+      "A construção de prédios altos",
+      "O plantio de árvores nas calçadas",
+      "O transporte de alimentos",
+    ],
+    correta: 0,
+  },
+
+  // ---- 48 ----
+  {
+    p: "Um problema ambiental comum nas grandes cidades é:",
+    alt: [
+      "A poluição do ar causada por veículos e fábricas",
+      "O excesso de florestas",
+      "A falta de moradores",
+      "O silêncio nas ruas",
+    ],
+    correta: 0,
+  },
+
+  // ---- 49 ----
+  {
+    p: "Como os alimentos produzidos no campo chegam aos supermercados da cidade?",
+    alt: [
+      "Transportados por caminhões, trens ou navios",
+      "Cultivados dentro do próprio supermercado",
+      "Trazidos somente por pessoas a pé",
+      "Produzidos nas fábricas da cidade",
+    ],
+    correta: 0,
+  },
+
+  // ---- 50 ----
+  {
+    p: "Qual exemplo mostra o que a cidade oferece ao campo?",
+    alt: [
+      "Máquinas, ferramentas e remédios usados na produção",
+      "Leite, ovos e verduras",
+      "Madeira retirada da floresta",
+      "Peixes pescados nos rios",
+    ],
+    correta: 0,
   },
 
 ]);
