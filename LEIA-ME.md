@@ -16,19 +16,31 @@ A ideia é simples: o `catalogo.js` diz **quais simulados existem**, e cada arqu
 
 ---
 
+## Como o site vai para o ar
+
+Os arquivos de verdade são **estes aqui, no seu computador**. Publicar é um comando que o Claude roda no VS Code — em segundos a Vercel atualiza o site.
+
+O GitHub guarda uma **cópia de segurança**, e só isso. Ele não publica nada: a Vercel não está ligada a ele de propósito, para o site mudar apenas quando você mandar.
+
+> Por isso, **editar pelo site do GitHub não muda o simulado dos alunos**. Peça as mudanças aqui.
+
+---
+
 ## Como incluir uma prova nova
 
-São dois passos, sempre os mesmos.
+O caminho normal é pedir aqui, com o Claude aberto no VS Code: diga a matéria, a turma e mande as perguntas — digitadas, em foto do caderno, em PDF, do jeito que estiverem. Ele cria o arquivo em `perguntas/`, registra no `catalogo.js`, confere e publica.
+
+O resto desta seção é para quando você quiser fazer à mão. São dois passos.
 
 **1. Criar o arquivo das perguntas.**
 
-No GitHub: **Add file → Create new file**. No campo do nome, digite o caminho completo, com a barra:
+Crie o arquivo dentro da pasta `perguntas/`, seguindo o padrão de nome:
 
 ```
 perguntas/mat-3ano-set26.js
 ```
 
-A barra faz o GitHub colocar o arquivo dentro da pasta automaticamente. Cole as perguntas no mesmo formato dos arquivos que já existem — abra um deles para copiar o modelo. A primeira linha precisa ter o mesmo id do catálogo:
+Cole as perguntas no mesmo formato dos arquivos que já existem — abra um deles para copiar o modelo. A primeira linha precisa ter o mesmo id do catálogo:
 
 ```js
 registrarPerguntas("mat-3ano-set26", [
@@ -58,7 +70,7 @@ Abra o `catalogo.js`, copie o modelo que está comentado no fim do arquivo e pre
 },
 ```
 
-Salve. A Vercel republica sozinha em segundos.
+Salve o arquivo e peça para publicar ("sobe isso pro ar"). Em segundos está no site.
 
 ### O padrão dos nomes
 
@@ -74,7 +86,7 @@ Verde é do 3º ano (Giovanna), roxo é do 4º ano (Antonella). O site troca o t
 
 ## Provas que já passaram
 
-No `catalogo.js`, troque `ativo: true` por `ativo: false`.
+No `catalogo.js`, troque `ativo: true` por `ativo: false` — ou peça aqui, que é mais rápido.
 
 O simulado sai do topo e desce para a seção **Provas anteriores**, que fica fechadinha no fim da lista. Ele continua funcionando e o ranking continua salvo — serve como revisão para a prova final ou para a recuperação.
 
@@ -107,7 +119,9 @@ Quem abrir esse link já cai na tela certa, com o simulado selecionado — sem r
 
 **Cada simulado tem seu próprio ranking**, separado por id. Geografia de agosto não mistura com Ciências de setembro.
 
-Mostra os 20 melhores, guardando só o melhor resultado de cada nome. Critério: mais acertos ganha; empatou, ganha quem foi mais rápido.
+Mostra os 20 melhores, guardando só o melhor resultado de cada nome. Critério: mais acertos ganha; empatou, ganha quem foi mais rápido. Os três primeiros aparecem com medalha, e quem ficou fora dos 20 ainda vê a própria posição no fim da lista.
+
+Para consultar quando quiser: **Ver o ranking**, na primeira tela, sem precisar jogar. Lá dentro, as abas no topo trocam de simulado — dá para conferir o 3º e o 4º ano na mesma tela.
 
 **Para apagar um resultado** (nome inadequado, teste seu, etc.): Supabase → **Table Editor → placar** → seleciona a linha → Delete.
 
@@ -118,6 +132,12 @@ Mostra os 20 melhores, guardando só o melhor resultado de cada nome. Critério:
 **Sobre os nomes.** O quiz pede só o primeiro nome, sem e-mail nem qualquer outro dado. Como o link é público e são crianças, vale combinar com a turma: primeiro nome ou apelido, nada além disso.
 
 **Sobre trapaça.** Um aluno mais curioso conseguiria ver as respostas certas no código-fonte da página ou mandar uma nota falsa. Para um quiz de estudo da turma isso não costuma ser problema, mas é bom você saber que existe.
+
+**No fim da prova, dá para revisar.** A tela do resultado traz as perguntas erradas, com o que a criança marcou e qual era a certa. É a parte que faz o simulado virar estudo, e não só nota.
+
+**Ninguém perde a partida no meio.** O progresso fica guardado por 6 horas no próprio aparelho: se fechar o site, cair a internet ou chegar uma mensagem, ao voltar aparece "Continuar de onde parei", com o placar e o tempo certos. O relógio não corre enquanto o site está fechado. Também dá para sair do simulado a qualquer momento, com confirmação, sem precisar recarregar a página.
+
+**O nome fica guardado** no aparelho, então não precisa digitar de novo a cada partida.
 
 **Embaralhamento.** As perguntas e as alternativas trocam de ordem a cada partida, então ninguém decora "é sempre a letra B" — e todo mundo responde às mesmas perguntas, o que mantém o ranking justo.
 
