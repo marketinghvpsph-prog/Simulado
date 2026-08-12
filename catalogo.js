@@ -15,6 +15,9 @@
 //  arquivo -> onde estao as perguntas, dentro da pasta perguntas/
 //  ativo   -> true  = aparece em destaque, no topo
 //             false = desce para "Provas anteriores"
+//  sorteia -> quantas perguntas caem em cada partida.
+//             Ex: banco de 50 com sorteia: 40 -> cada rodada tem 40,
+//             sorteadas entre as 50. Se apagar esta linha, caem todas.
 // ============================================================
 
 const CATALOGO = [
@@ -26,6 +29,7 @@ const CATALOGO = [
     turma: "3º ano",
     cor: "verde",
     arquivo: "perguntas/geo-3ano-ago26.js",
+    sorteia: 40,
     ativo: true,
   },
 
@@ -36,6 +40,7 @@ const CATALOGO = [
     turma: "4º ano",
     cor: "roxo",
     arquivo: "perguntas/geo-4ano-ago26.js",
+    sorteia: 40,
     ativo: true,
   },
 
@@ -50,6 +55,7 @@ const CATALOGO = [
   //   turma: "4º ano",
   //   cor: "roxo",
   //   arquivo: "perguntas/ing-4ano-set26.js",
+  //   sorteia: 20,
   //   ativo: true,
   // },
 
