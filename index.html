@@ -27,6 +27,7 @@ body[data-tema="roxo"]{
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 body{
   font-family:"Nunito",system-ui,sans-serif;
   color:var(--tinta);
@@ -73,7 +74,7 @@ h2{font-size:22px;margin-bottom:4px}
   padding:13px 15px;font-family:inherit;font-size:16px;color:inherit;
   transition:border-color .15s, background .15s;
 }
-.quiz:hover{border-color:var(--tinta)}
+@media (hover:hover){ .quiz:hover{border-color:var(--tinta)} }
 .quiz[aria-pressed="true"]{border-color:var(--marca);background:var(--marca-fundo)}
 .quiz-selo{
   width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;
@@ -97,7 +98,7 @@ h2{font-size:22px;margin-bottom:4px}
 .anteriores summary::-webkit-details-marker{display:none}
 .anteriores summary::before{content:"›";font-size:19px;line-height:1;transition:transform .15s}
 .anteriores[open] summary::before{transform:rotate(90deg)}
-.anteriores summary:hover{color:var(--tinta)}
+@media (hover:hover){ .anteriores summary:hover{color:var(--tinta)} }
 .anteriores .quizzes{margin-top:12px}
 
 .link{
@@ -143,17 +144,30 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   padding:14px 16px;font-family:inherit;font-size:16.5px;color:inherit;line-height:1.35;
   transition:border-color .15s,background .15s;
 }
-.alt:hover:not(:disabled){border-color:var(--tinta)}
+@media (hover:hover){ .alt:hover:not(:disabled){border-color:var(--tinta)} }
 .alt-letra{
   width:28px;height:28px;flex:none;border-radius:8px;display:grid;place-items:center;
   background:var(--tema-fundo);color:var(--tema-escuro);font-weight:800;font-size:14px;
   font-family:"Baloo 2",sans-serif;
 }
+.alt.escolhida{border-color:var(--tinta);background:#FFFDF5}
+.alt.escolhida .alt-letra{background:var(--tinta);color:#fff}
 .alt.certa{border-color:var(--tema);background:var(--tema-fundo)}
 .alt.certa .alt-letra{background:var(--tema);color:#fff}
 .alt.errada{border-color:var(--erro);background:var(--erro-fundo)}
 .alt.errada .alt-letra{background:var(--erro);color:#fff}
 .alt:disabled{cursor:default}
+.confirma{
+  margin-top:18px;padding:16px;border-radius:var(--raio);
+  background:var(--papel);border:2px dashed var(--linha);
+}
+.confirma-txt{font-weight:700;font-size:16px;text-align:center;margin-bottom:12px}
+.confirma-txt strong{
+  display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;
+  background:var(--tinta);color:#fff;font-family:"Baloo 2",sans-serif;
+  vertical-align:-6px;margin:0 2px;
+}
+.confirma .botoes{margin-top:0}
 .recado{
   margin-top:16px;font-weight:700;font-size:16px;min-height:24px;
   color:var(--tema-escuro);
@@ -205,6 +219,20 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 }
 .rodape{text-align:center;font-size:13px;color:var(--tinta-fraca);margin-top:24px}
 
+@media (max-width:400px){
+  body{padding:14px 12px calc(32px + env(safe-area-inset-bottom))}
+  .cartao{padding:16px}
+  .alt{padding:13px 13px;font-size:16px;gap:10px}
+  .quiz{padding:12px}
+  .quiz-selo{width:38px;height:38px;font-size:14px}
+  .pergunta{font-size:18.5px}
+  .carimbo{width:150px;height:150px}
+  .carimbo-num{font-size:48px}
+  .botao{font-size:18px;padding:14px}
+  .linha{padding:10px 6px;gap:9px}
+  .nota{font-size:17px}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;transition-duration:.01ms !important}
 }
@@ -255,6 +283,15 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     <div class="cartao">
       <p class="pergunta" id="pergunta"></p>
       <div class="alternativas" id="alternativas"></div>
+
+      <div class="confirma" id="confirma" hidden>
+        <p class="confirma-txt">Você marcou a letra <strong id="confirma-letra">A</strong>. É essa mesmo?</p>
+        <div class="botoes">
+          <button class="botao" id="btn-confirmar">Sim, é essa</button>
+          <button class="botao botao-vazado" id="btn-trocar">Quero trocar</button>
+        </div>
+      </div>
+
       <p class="recado" id="recado" aria-live="polite"></p>
       <div class="botoes">
         <button class="botao" id="btn-proxima" hidden>Próxima</button>
@@ -311,7 +348,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   var estado = {
     item: null, nome: "",
     perguntas: [], indice: 0, acertos: 0,
-    inicio: 0, segundos: 0, respondida: false,
+    inicio: 0, segundos: 0, respondida: false, escolha: null,
     filtro: null
   };
 
@@ -447,8 +484,12 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
         marcarSelecionado();
         return;
       }
-      el("sub-home").textContent =
-        item.materia + " · " + BANCO[item.id].length + " perguntas · " + item.turma;
+      var total = BANCO[item.id].length;
+      var caem = quantasCaem(item);
+      el("sub-home").textContent = item.materia + " · " + item.turma + " · " +
+        (caem < total
+          ? caem + " perguntas sorteadas entre " + total
+          : caem + " perguntas");
       validar();
     });
   }
@@ -460,9 +501,17 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   }
 
   // ---------------- quiz ----------------
+  function quantasCaem(item){
+    var total = BANCO[item.id].length;
+    var n = parseInt(item.sorteia, 10);
+    if (!n || n < 1 || n > total) return total;
+    return n;
+  }
+
   function comecar(){
     estado.nome = el("nome").value.trim().replace(/\s+/g, " ").slice(0, 18);
-    estado.perguntas = embaralhar(BANCO[estado.item.id]).map(function(p){
+    var sorteadas = embaralhar(BANCO[estado.item.id]).slice(0, quantasCaem(estado.item));
+    estado.perguntas = sorteadas.map(function(p){
       var ordem = embaralhar([0,1,2,3]);
       return {
         p: p.p,
@@ -481,6 +530,8 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     var q = estado.perguntas[estado.indice];
     var total = estado.perguntas.length;
     estado.respondida = false;
+    estado.escolha = null;
+    el("confirma").hidden = true;
 
     el("contador").textContent = "Pergunta " + (estado.indice + 1) + " de " + total;
     el("placar-atual").textContent = estado.acertos + (estado.acertos === 1 ? " acerto" : " acertos");
@@ -502,19 +553,43 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       var t = document.createElement("span");
       t.textContent = texto;
       b.appendChild(letra); b.appendChild(t);
-      b.addEventListener("click", function(){ responder(i); });
+      b.addEventListener("click", function(){ selecionar(i); });
       caixa.appendChild(b);
     });
   }
 
-  function responder(escolha){
+  function selecionar(i){
     if (estado.respondida) return;
+    estado.escolha = i;
+
+    Array.prototype.forEach.call(document.querySelectorAll("#alternativas .alt"),
+      function(b, n){ b.classList.toggle("escolhida", n === i); });
+
+    el("confirma-letra").textContent = "ABCD".charAt(i);
+    el("confirma").hidden = false;
+    el("btn-confirmar").focus();
+    el("btn-confirmar").scrollIntoView({ block: "nearest" });
+  }
+
+  function trocar(){
+    if (estado.respondida) return;
+    estado.escolha = null;
+    Array.prototype.forEach.call(document.querySelectorAll("#alternativas .alt"),
+      function(b){ b.classList.remove("escolhida"); });
+    el("confirma").hidden = true;
+  }
+
+  function responder(){
+    if (estado.respondida || estado.escolha === null) return;
     estado.respondida = true;
+    var escolha = estado.escolha;
+    el("confirma").hidden = true;
 
     var q = estado.perguntas[estado.indice];
     var botoes = document.querySelectorAll("#alternativas .alt");
     Array.prototype.forEach.call(botoes, function(b, i){
       b.disabled = true;
+      b.classList.remove("escolhida");
       if (i === q.correta) b.classList.add("certa");
       else if (i === escolha) b.classList.add("errada");
     });
@@ -723,6 +798,8 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
   el("nome").addEventListener("input", validar);
   el("btn-comecar").addEventListener("click", comecar);
+  el("btn-confirmar").addEventListener("click", responder);
+  el("btn-trocar").addEventListener("click", trocar);
   el("btn-proxima").addEventListener("click", proxima);
   el("btn-ranking").addEventListener("click", function(){ carregarRanking(estado.item); });
   el("btn-denovo").addEventListener("click", function(){ comecar(); });
