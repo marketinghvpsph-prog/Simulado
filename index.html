@@ -268,6 +268,27 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   0%{transform:translateY(-14px) scale(.7);opacity:0}
   100%{transform:none;opacity:1}
 }
+/* trocar de simulado sem sair da tela do ranking */
+.rank-abas{
+  display:flex;gap:8px;margin-top:16px;padding-bottom:9px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  border-bottom:1px dashed var(--linha);
+}
+.rank-abas:empty{display:none}
+.rank-aba{
+  flex:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;
+  padding:8px 13px;border-radius:99px;white-space:nowrap;
+  border:2px solid var(--linha);background:#fff;color:var(--tinta-fraca);
+  transition:border-color .15s,background .15s,color .15s;
+}
+@media (hover:hover){ .rank-aba:hover{border-color:var(--tinta);color:var(--tinta)} }
+.rank-aba[aria-pressed="true"]{
+  border-color:var(--aba);background:var(--aba-fundo);color:var(--aba-escuro);
+}
+.rank-aba[data-cor="verde"]{--aba:#2E7D32;--aba-fundo:#E8F5E9;--aba-escuro:#1B5E20}
+.rank-aba[data-cor="roxo"]{--aba:#6A1B9A;--aba-fundo:#F3E5F5;--aba-escuro:#4A148C}
+.rank-aba .aba-antiga{font-weight:600;opacity:.7}
+
 .lista{list-style:none;margin-top:16px}
 .linha{
   display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;
@@ -474,6 +495,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
         <h2>Melhores da turma</h2>
         <p class="apoio">Quem acertou mais fica na frente. Empatou? Ganha quem foi mais rápido.</p>
       </div>
+      <div class="rank-abas" id="rank-abas"></div>
       <ol class="lista" id="lista-ranking"></ol>
       <p class="rank-info" id="rank-info"></p>
       <div class="botoes">
@@ -1087,9 +1109,48 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     });
   }
 
+  // abas para trocar de simulado sem sair do ranking.
+  // Nao carrega as perguntas: o ranking so precisa do id.
+  function montarAbas(atual){
+    var caixa = el("rank-abas");
+    var rolagem = caixa.scrollLeft;    // com muitas provas, nao volta ao começo
+    caixa.textContent = "";
+    if (CATALOGO.length < 2) return;   // com um simulado so, nao ha o que trocar
+
+    var ativos = CATALOGO.filter(function(q){ return q.ativo !== false; });
+    var antigos = CATALOGO.filter(function(q){ return q.ativo === false; });
+
+    ativos.concat(antigos).forEach(function(q){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "rank-aba";
+      b.dataset.cor = q.cor;
+      b.setAttribute("aria-pressed", String(q.id === atual.id));
+      b.title = q.materia + " — " + q.titulo + " — " + q.turma;
+
+      var num = String(q.turma).match(/\d+/);
+      b.textContent = (num ? num[0] + "º" : q.turma) + " · " + q.materia;
+
+      if (q.ativo === false){
+        var marca = document.createElement("span");
+        marca.className = "aba-antiga";
+        marca.textContent = " (anterior)";
+        b.appendChild(marca);
+      }
+
+      b.addEventListener("click", function(){
+        if (q.id !== atual.id) carregarRanking(q);
+      });
+      caixa.appendChild(b);
+    });
+
+    caixa.scrollLeft = rolagem;
+  }
+
   function carregarRanking(item){
     if (!item) return;
     document.body.dataset.tema = item.cor;
+    montarAbas(item);
     el("rank-turma").textContent = item.materia + " · " + item.titulo + " · " + item.turma;
 
     var lista = el("lista-ranking");
@@ -1242,7 +1303,11 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   el("btn-proxima").addEventListener("click", proxima);
   el("btn-ranking").addEventListener("click", function(){ carregarRanking(estado.item); });
   el("btn-denovo").addEventListener("click", function(){ comecar(); });
-  el("btn-voltar").addEventListener("click", function(){ mostrar("tela-inicio"); });
+  el("btn-voltar").addEventListener("click", function(){
+    // o ranking pode ter trocado a cor da tela; devolve a do simulado escolhido
+    document.body.dataset.tema = estado.item ? estado.item.cor : "verde";
+    mostrar("tela-inicio");
+  });
   el("btn-ver-ranking").addEventListener("click", function(){ carregarRanking(quizPadrao()); });
   el("btn-todos").addEventListener("click", function(){
     estado.filtro = null;
