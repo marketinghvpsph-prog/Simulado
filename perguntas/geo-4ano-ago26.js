@@ -1,9 +1,10 @@
 // ============================================================
 //  4º ANO - POPULAÇÃO E NATUREZA
-//  id: geo-4ano-ago26
+//  id: geo-4ano-ago26   |   50 perguntas no banco
 //
 //  "correta" e o numero da alternativa certa, comecando do ZERO:
 //  0 = primeira, 1 = segunda, 2 = terceira, 3 = quarta.
+//  O site sorteia e embaralha, entao a ordem daqui nao importa.
 // ============================================================
 
 registrarPerguntas("geo-4ano-ago26", [
@@ -246,6 +247,366 @@ registrarPerguntas("geo-4ano-ago26", [
       "Pernambuco",
     ],
     correta: 1,
+  },
+
+  // ---- 21 ----
+  {
+    p: "Qual órgão é responsável por realizar o Censo e contar a população brasileira?",
+    alt: [
+      "IBGE",
+      "IBAMA",
+      "INEP",
+      "INSS",
+    ],
+    correta: 0,
+  },
+
+  // ---- 22 ----
+  {
+    p: "O número total de habitantes de um lugar é chamado de população:",
+    alt: [
+      "Absoluta",
+      "Relativa",
+      "Urbana",
+      "Rural",
+    ],
+    correta: 0,
+  },
+
+  // ---- 23 ----
+  {
+    p: "A densidade demográfica indica:",
+    alt: [
+      "Quantos habitantes existem, em média, em cada quilômetro quadrado",
+      "Quantas cidades existem no estado",
+      "Qual é a altitude do relevo",
+      "Quantos rios cortam a região",
+    ],
+    correta: 0,
+  },
+
+  // ---- 24 ----
+  {
+    p: "Como se chama a área do território que tem pouquíssimos habitantes?",
+    alt: [
+      "Vazio demográfico",
+      "Metrópole",
+      "Bacia hidrográfica",
+      "Unidade de conservação",
+    ],
+    correta: 0,
+  },
+
+  // ---- 25 ----
+  {
+    p: "Qual é a região brasileira com o maior número de habitantes?",
+    alt: [
+      "Sudeste",
+      "Norte",
+      "Centro-Oeste",
+      "Sul",
+    ],
+    correta: 0,
+  },
+
+  // ---- 26 ----
+  {
+    p: "A pessoa que vem de outro país para morar no Brasil é chamada aqui de:",
+    alt: [
+      "Imigrante",
+      "Turista",
+      "Autóctone",
+      "Sertaneja",
+    ],
+    correta: 0,
+  },
+
+  // ---- 27 ----
+  {
+    p: "A mudança de pessoas de uma região do Brasil para outra é chamada de:",
+    alt: [
+      "Migração interna",
+      "Imigração internacional",
+      "Colonização",
+      "Miscigenação",
+    ],
+    correta: 0,
+  },
+
+  // ---- 28 ----
+  {
+    p: "Os povos africanos trouxeram para a cultura brasileira contribuições como:",
+    alt: [
+      "A capoeira, o acarajé e vários ritmos musicais",
+      "A pizza e o macarrão",
+      "O quimono e o sushi",
+      "O relógio de sol e a bússola",
+    ],
+    correta: 0,
+  },
+
+  // ---- 29 ----
+  {
+    p: "As áreas reservadas por lei para os povos indígenas viverem são chamadas de:",
+    alt: [
+      "Terras indígenas demarcadas",
+      "Unidades de conservação",
+      "Áreas urbanas",
+      "Reservas minerais",
+    ],
+    correta: 0,
+  },
+
+  // ---- 30 ----
+  {
+    p: "A busca por qual metal precioso levou muitas pessoas para o interior, na região de Minas Gerais?",
+    alt: [
+      "Ouro",
+      "Ferro",
+      "Alumínio",
+      "Cobre",
+    ],
+    correta: 0,
+  },
+
+  // ---- 31 ----
+  {
+    p: "Nos primeiros séculos da colonização, a produção de açúcar se concentrou principalmente:",
+    alt: [
+      "No litoral do Nordeste",
+      "No interior do Norte",
+      "No extremo Sul",
+      "No Centro-Oeste",
+    ],
+    correta: 0,
+  },
+
+  // ---- 32 ----
+  {
+    p: "Nos mapas de relevo, as cores diferentes servem para indicar:",
+    alt: [
+      "As diferentes altitudes do terreno",
+      "A quantidade de habitantes",
+      "Os limites entre os estados",
+      "Os tipos de vegetação",
+    ],
+    correta: 0,
+  },
+
+  // ---- 33 ----
+  {
+    p: "Como se chamam as elevações mais altas e íngremes do relevo, encontradas nas serras?",
+    alt: [
+      "Montanhas",
+      "Planícies",
+      "Depressões",
+      "Chapadas",
+    ],
+    correta: 0,
+  },
+
+  // ---- 34 ----
+  {
+    p: "A água da chuva, o vento e os rios são agentes que:",
+    alt: [
+      "Modelam e transformam o relevo lentamente",
+      "Não alteram o relevo",
+      "Constroem as cidades",
+      "Aumentam a população",
+    ],
+    correta: 0,
+  },
+
+  // ---- 35 ----
+  {
+    p: "A mineração e a abertura de estradas transformam o relevo por ação de agentes:",
+    alt: [
+      "Antrópicos",
+      "Naturais",
+      "Climáticos",
+      "Vulcânicos",
+    ],
+    correta: 0,
+  },
+
+  // ---- 36 ----
+  {
+    p: "O conjunto formado por um rio principal e todos os seus afluentes é chamado de:",
+    alt: [
+      "Bacia hidrográfica",
+      "Foz",
+      "Nascente",
+      "Aquífero",
+    ],
+    correta: 0,
+  },
+
+  // ---- 37 ----
+  {
+    p: "O que é um afluente?",
+    alt: [
+      "Um rio menor que deságua em um rio maior",
+      "O lugar onde o rio nasce",
+      "O lugar onde o rio termina",
+      "Um lago formado pelas chuvas",
+    ],
+    correta: 0,
+  },
+
+  // ---- 38 ----
+  {
+    p: "As usinas hidrelétricas produzem energia a partir:",
+    alt: [
+      "Da força das águas dos rios",
+      "Da força dos ventos",
+      "Da luz do sol",
+      "Da queima do carvão",
+    ],
+    correta: 0,
+  },
+
+  // ---- 39 ----
+  {
+    p: "A água que fica armazenada no subsolo, entre as rochas, forma:",
+    alt: [
+      "Um aquífero",
+      "Uma cachoeira",
+      "Uma planície",
+      "Uma depressão",
+    ],
+    correta: 0,
+  },
+
+  // ---- 40 ----
+  {
+    p: "Qual é o rio brasileiro com o maior volume de água?",
+    alt: [
+      "Amazonas",
+      "São Francisco",
+      "Paraná",
+      "Tietê",
+    ],
+    correta: 0,
+  },
+
+  // ---- 41 ----
+  {
+    p: "Um problema que atinge muitos rios próximos às grandes cidades é:",
+    alt: [
+      "A poluição causada pelo esgoto e pelo lixo",
+      "O excesso de peixes",
+      "A água limpa demais",
+      "A falta de pontes",
+    ],
+    correta: 0,
+  },
+
+  // ---- 42 ----
+  {
+    p: "O Cerrado é conhecido por apresentar:",
+    alt: [
+      "Árvores baixas, de troncos retorcidos, e muitas chapadas",
+      "Florestas densas e sempre úmidas",
+      "Campos cobertos de neve",
+      "Apenas dunas e praias",
+    ],
+    correta: 0,
+  },
+
+  // ---- 43 ----
+  {
+    p: "Qual bioma brasileiro tem clima semiárido, com longos períodos de seca?",
+    alt: [
+      "Caatinga",
+      "Amazônia",
+      "Pantanal",
+      "Pampa",
+    ],
+    correta: 0,
+  },
+
+  // ---- 44 ----
+  {
+    p: "Muitas plantas da Caatinga têm espinhos e folhas pequenas porque isso ajuda a:",
+    alt: [
+      "Guardar água durante a seca",
+      "Atrair mais chuva",
+      "Crescer mais rápido",
+      "Flutuar na água",
+    ],
+    correta: 0,
+  },
+
+  // ---- 45 ----
+  {
+    p: "O Pampa, bioma formado por campos, é encontrado principalmente:",
+    alt: [
+      "No Rio Grande do Sul",
+      "No Amazonas",
+      "No Ceará",
+      "Em Minas Gerais",
+    ],
+    correta: 0,
+  },
+
+  // ---- 46 ----
+  {
+    p: "A Mata Atlântica se estende principalmente por qual parte do território brasileiro?",
+    alt: [
+      "O litoral",
+      "O centro do país",
+      "A fronteira com a Bolívia",
+      "As ilhas do Norte",
+    ],
+    correta: 0,
+  },
+
+  // ---- 47 ----
+  {
+    p: "A floresta Amazônica se destaca por:",
+    alt: [
+      "Sua enorme variedade de plantas e animais",
+      "Sua vegetação rasteira e seca",
+      "Seus campos usados para o pastoreio",
+      "Sua ausência de rios",
+    ],
+    correta: 0,
+  },
+
+  // ---- 48 ----
+  {
+    p: "Qual é a principal causa da redução das áreas naturais dos biomas brasileiros?",
+    alt: [
+      "A ação humana, com o desmatamento e as queimadas",
+      "A chuva",
+      "O vento",
+      "Os animais silvestres",
+    ],
+    correta: 0,
+  },
+
+  // ---- 49 ----
+  {
+    p: "As unidades de conservação, como os parques nacionais, servem para:",
+    alt: [
+      "Proteger a natureza e as espécies que vivem ali",
+      "Construir novas cidades",
+      "Aumentar a mineração",
+      "Abrir estradas",
+    ],
+    correta: 0,
+  },
+
+  // ---- 50 ----
+  {
+    p: "O Pantanal fica alagado boa parte do ano porque:",
+    alt: [
+      "Recebe as águas dos rios que descem dos planaltos ao redor",
+      "Fica abaixo do nível do mar",
+      "Tem neve derretendo o ano todo",
+      "É cortado por canais artificiais",
+    ],
+    correta: 0,
   },
 
 ]);
