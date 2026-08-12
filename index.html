@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz de Geografia</title>
+<meta name="description" content="Quiz de Geografia com ranking da turma.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#FBF9F3;
+  --tinta:#23201C;
+  --tinta-fraca:#6B655C;
+  --grade:rgba(35,32,28,.07);
+  --linha:rgba(35,32,28,.14);
+  --erro:#C62828;
+  --erro-fundo:#FDECEA;
+  --tema:#2E7D32;
+  --tema-escuro:#1B5E20;
+  --tema-fundo:#E8F5E9;
+  --raio:14px;
+}
+body[data-tema="roxo"]{
+  --tema:#6A1B9A; --tema-escuro:#4A148C; --tema-fundo:#F3E5F5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--tinta);
+  background-color:var(--papel);
+  background-image:
+    repeating-linear-gradient(to right, var(--grade) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(to bottom, var(--grade) 0 1px, transparent 1px 26px);
+  min-height:100vh;
+  line-height:1.5;
+  padding:20px 16px calc(40px + env(safe-area-inset-bottom));
+}
+.folha{max-width:560px;margin:0 auto}
+
+/* ---------- tipografia ---------- */
+h1,h2,.carimbo-num{font-family:"Baloo 2",system-ui,sans-serif;font-weight:800;line-height:1.1}
+h1{font-size:clamp(30px,8vw,42px);letter-spacing:-.02em}
+h2{font-size:22px;margin-bottom:4px}
+.olho{
+  font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tema);margin-bottom:6px;
+}
+.apoio{color:var(--tinta-fraca);font-size:15px}
+
+/* ---------- cartao base ---------- */
+.cartao{
+  background:#fff;border:2px solid var(--tinta);border-radius:var(--raio);
+  box-shadow:4px 4px 0 var(--linha);padding:20px;
+}
+
+/* ---------- telas ---------- */
+.tela{display:none}
+.tela.ativa{display:block;animation:entra .28s ease-out}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- inicio ---------- */
+.cabeca{text-align:center;margin-bottom:22px}
+.cabeca h1{margin-bottom:6px}
+.rotulo{display:block;font-weight:700;font-size:15px;margin-bottom:8px}
+.turmas{display:grid;gap:10px;margin-bottom:20px}
+.turma{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  background:#fff;border:2px solid var(--linha);border-radius:var(--raio);
+  padding:14px 16px;font-family:inherit;font-size:16px;color:inherit;
+  transition:border-color .15s, background .15s;
+}
+.turma:hover{border-color:var(--tinta)}
+.turma[aria-pressed="true"]{border-color:var(--marca);background:var(--marca-fundo)}
+.turma-selo{
+  width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;
+  font-family:"Baloo 2",sans-serif;font-weight:800;font-size:15px;color:#fff;background:var(--marca);
+}
+.turma-nome{font-weight:700;display:block}
+.turma-tema{font-size:14px;color:var(--tinta-fraca)}
+.turma[data-cor="verde"]{--marca:#2E7D32;--marca-fundo:#E8F5E9}
+.turma[data-cor="roxo"]{--marca:#6A1B9A;--marca-fundo:#F3E5F5}
+
+input[type="text"]{
+  width:100%;font-family:inherit;font-size:17px;color:inherit;
+  border:2px solid var(--linha);border-radius:var(--raio);padding:14px 16px;
+  background:#fff;
+}
+input[type="text"]:focus{outline:none;border-color:var(--tema)}
+.dica{font-size:13px;color:var(--tinta-fraca);margin-top:6px}
+
+/* ---------- botoes ---------- */
+.botao{
+  display:block;width:100%;cursor:pointer;font-family:"Baloo 2",sans-serif;font-weight:800;
+  font-size:19px;color:#fff;background:var(--tema);border:2px solid var(--tema-escuro);
+  border-radius:var(--raio);padding:15px;box-shadow:0 4px 0 var(--tema-escuro);
+  transition:transform .08s, box-shadow .08s;
+}
+.botao:active{transform:translateY(3px);box-shadow:0 1px 0 var(--tema-escuro)}
+.botao[disabled]{opacity:.45;cursor:not-allowed}
+.botao-vazado{
+  background:#fff;color:var(--tema-escuro);box-shadow:0 4px 0 var(--linha);
+  border-color:var(--tinta);
+}
+.botao-vazado:active{box-shadow:0 1px 0 var(--linha)}
+.botoes{display:grid;gap:10px;margin-top:18px}
+:focus-visible{outline:3px solid var(--tema);outline-offset:2px}
+
+/* ---------- quiz ---------- */
+.barra-topo{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;
+  font-size:14px;font-weight:700;color:var(--tinta-fraca)}
+.trilho{height:9px;background:#fff;border:2px solid var(--tinta);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.progresso{height:100%;background:var(--tema);width:0;transition:width .3s ease-out}
+.pergunta{font-size:20px;font-weight:700;line-height:1.35;margin-bottom:18px}
+.alternativas{display:grid;gap:10px}
+.alt{
+  display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;cursor:pointer;
+  background:#fff;border:2px solid var(--linha);border-radius:var(--raio);
+  padding:14px 16px;font-family:inherit;font-size:16.5px;color:inherit;line-height:1.35;
+  transition:border-color .15s,background .15s;
+}
+.alt:hover:not(:disabled){border-color:var(--tinta)}
+.alt-letra{
+  width:28px;height:28px;flex:none;border-radius:8px;display:grid;place-items:center;
+  background:var(--tema-fundo);color:var(--tema-escuro);font-weight:800;font-size:14px;
+  font-family:"Baloo 2",sans-serif;
+}
+.alt.certa{border-color:var(--tema);background:var(--tema-fundo)}
+.alt.certa .alt-letra{background:var(--tema);color:#fff}
+.alt.errada{border-color:var(--erro);background:var(--erro-fundo)}
+.alt.errada .alt-letra{background:var(--erro);color:#fff}
+.alt:disabled{cursor:default}
+.recado{
+  margin-top:16px;font-weight:700;font-size:16px;min-height:24px;
+  color:var(--tema-escuro);
+}
+.recado[data-estado="errou"]{color:var(--erro)}
+
+/* ---------- carimbo (resultado) ---------- */
+.placa{text-align:center;padding:28px 20px 24px}
+.carimbo{
+  width:172px;height:172px;margin:6px auto 18px;border-radius:50%;
+  border:5px solid var(--tema);color:var(--tema);
+  display:grid;place-content:center;gap:2px;
+  box-shadow:inset 0 0 0 4px #fff, inset 0 0 0 7px var(--tema);
+  transform:rotate(-7deg);
+  animation:carimbar .5s cubic-bezier(.2,1.4,.4,1) both;
+}
+@keyframes carimbar{
+  0%{transform:rotate(-16deg) scale(2.4);opacity:0}
+  60%{opacity:1}
+  100%{transform:rotate(-7deg) scale(1);opacity:1}
+}
+.carimbo-num{font-size:56px;line-height:1}
+.carimbo-de{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.carimbo-tempo{font-size:13px;font-weight:700;margin-top:4px;opacity:.85}
+.frase{font-size:19px;font-weight:700;margin-bottom:4px}
+
+/* ---------- ranking ---------- */
+.lista{list-style:none;margin-top:14px}
+.linha{
+  display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;
+  border:2px solid transparent;
+}
+.linha + .linha{border-top:1px dashed var(--linha)}
+.linha.eu{border-color:var(--tema);background:var(--tema-fundo)}
+.pos{
+  width:30px;flex:none;text-align:center;font-family:"Baloo 2",sans-serif;
+  font-weight:800;font-size:17px;color:var(--tinta-fraca);
+}
+.linha:nth-child(1) .pos,.linha:nth-child(2) .pos,.linha:nth-child(3) .pos{color:var(--tema);font-size:20px}
+.quem{flex:1;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.tempo{font-size:13px;color:var(--tinta-fraca);font-weight:600}
+.nota{
+  flex:none;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:18px;color:var(--tema-escuro);
+}
+.vazio{text-align:center;color:var(--tinta-fraca);padding:24px 8px;font-size:15px}
+.aviso{
+  margin-top:14px;padding:12px 14px;border-radius:10px;font-size:14px;
+  background:#FFF8E1;border:2px solid #F9A825;color:#6D4C00;
+}
+.rodape{text-align:center;font-size:13px;color:var(--tinta-fraca);margin-top:24px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body data-tema="verde">
+<main class="folha">
+
+  <!-- ============ TELA 1: INICIO ============ -->
+  <section class="tela ativa" id="tela-inicio">
+    <div class="cabeca">
+      <p class="olho">Simulado da turma</p>
+      <h1>Quiz de Geografia</h1>
+      <p class="apoio">20 perguntas. Acerte o máximo que puder e entre no ranking.</p>
+    </div>
+
+    <div class="cartao">
+      <span class="rotulo">Escolha o seu quiz</span>
+      <div class="turmas" id="turmas"></div>
+
+      <label class="rotulo" for="nome">Seu nome</label>
+      <input type="text" id="nome" maxlength="18" autocomplete="off"
+             placeholder="Ex.: Giovanna" spellcheck="false">
+      <p class="dica">Use só o primeiro nome ou um apelido — ele vai aparecer no ranking.</p>
+
+      <div class="botoes">
+        <button class="botao" id="btn-comecar" disabled>Começar</button>
+        <button class="botao botao-vazado" id="btn-ver-ranking">Ver o ranking</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TELA 2: QUIZ ============ -->
+  <section class="tela" id="tela-quiz">
+    <div class="barra-topo">
+      <span id="contador">Pergunta 1 de 20</span>
+      <span id="placar-atual">0 acertos</span>
+    </div>
+    <div class="trilho"><div class="progresso" id="progresso"></div></div>
+
+    <div class="cartao">
+      <p class="pergunta" id="pergunta"></p>
+      <div class="alternativas" id="alternativas"></div>
+      <p class="recado" id="recado" aria-live="polite"></p>
+      <div class="botoes">
+        <button class="botao" id="btn-proxima" hidden>Próxima</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TELA 3: RESULTADO ============ -->
+  <section class="tela" id="tela-resultado">
+    <div class="cartao placa">
+      <div class="carimbo">
+        <span class="carimbo-num" id="res-acertos">0</span>
+        <span class="carimbo-de" id="res-total">de 20</span>
+        <span class="carimbo-tempo" id="res-tempo"></span>
+      </div>
+      <p class="frase" id="res-frase"></p>
+      <p class="apoio" id="res-detalhe"></p>
+      <div id="res-aviso"></div>
+      <div class="botoes">
+        <button class="botao" id="btn-ranking">Ver o ranking</button>
+        <button class="botao botao-vazado" id="btn-denovo">Jogar de novo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TELA 4: RANKING ============ -->
+  <section class="tela" id="tela-ranking">
+    <div class="cartao">
+      <p class="olho" id="rank-turma">Ranking</p>
+      <h2>Melhores da turma</h2>
+      <p class="apoio">Quem acertou mais fica na frente. Empatou? Ganha quem foi mais rápido.</p>
+      <ol class="lista" id="lista-ranking"></ol>
+      <div class="botoes">
+        <button class="botao botao-vazado" id="btn-voltar">Voltar ao início</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="rodape">Feito para estudar. Boa sorte!</p>
+</main>
+
+<script src="config.js"></script>
+<script src="perguntas.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var estado = {
+    quiz: null, chave: null, nome: "",
+    perguntas: [], indice: 0, acertos: 0,
+    inicio: 0, segundos: 0, respondida: false
+  };
+
+  var el = function(id){ return document.getElementById(id); };
+  var telas = ["tela-inicio","tela-quiz","tela-resultado","tela-ranking"];
+
+  function mostrar(id){
+    telas.forEach(function(t){ el(t).classList.toggle("ativa", t === id); });
+    window.scrollTo(0,0);
+  }
+
+  function configurado(){
+    return CONFIG.SUPABASE_URL.indexOf("http") === 0 &&
+           CONFIG.SUPABASE_ANON_KEY.length > 30;
+  }
+
+  function embaralhar(lista){
+    var a = lista.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function tempoTexto(s){
+    var m = Math.floor(s / 60), r = s % 60;
+    return m > 0 ? m + "min " + r + "s" : r + "s";
+  }
+
+  // ---------------- tela inicial ----------------
+  function montarTurmas(){
+    var caixa = el("turmas");
+    Object.keys(QUIZZES).forEach(function(chave){
+      var q = QUIZZES[chave];
+      var b = document.createElement("button");
+      b.className = "turma";
+      b.type = "button";
+      b.dataset.cor = q.cor;
+      b.dataset.chave = chave;
+      b.setAttribute("aria-pressed", "false");
+
+      var selo = document.createElement("span");
+      selo.className = "turma-selo";
+      selo.textContent = q.turma.replace(" ano", "º");
+
+      var txt = document.createElement("span");
+      var n = document.createElement("strong");
+      n.className = "turma-nome";
+      n.textContent = q.turma;
+      var t = document.createElement("span");
+      t.className = "turma-tema";
+      t.textContent = q.titulo;
+      txt.appendChild(n); txt.appendChild(t);
+
+      b.appendChild(selo); b.appendChild(txt);
+      b.addEventListener("click", function(){ escolherTurma(chave); });
+      caixa.appendChild(b);
+    });
+  }
+
+  function escolherTurma(chave){
+    estado.chave = chave;
+    estado.quiz = QUIZZES[chave];
+    document.body.dataset.tema = estado.quiz.cor;
+    Array.prototype.forEach.call(document.querySelectorAll(".turma"), function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.chave === chave));
+    });
+    validar();
+  }
+
+  function validar(){
+    var ok = !!estado.chave && el("nome").value.trim().length >= 2;
+    el("btn-comecar").disabled = !ok;
+  }
+
+  // ---------------- quiz ----------------
+  function comecar(){
+    estado.nome = el("nome").value.trim().replace(/\s+/g, " ").slice(0, 18);
+    estado.perguntas = embaralhar(estado.quiz.perguntas).map(function(p){
+      var ordem = embaralhar([0,1,2,3]);
+      return {
+        p: p.p,
+        alt: ordem.map(function(i){ return p.alt[i]; }),
+        correta: ordem.indexOf(p.correta)
+      };
+    });
+    estado.indice = 0;
+    estado.acertos = 0;
+    estado.inicio = Date.now();
+    mostrar("tela-quiz");
+    desenharPergunta();
+  }
+
+  function desenharPergunta(){
+    var q = estado.perguntas[estado.indice];
+    var total = estado.perguntas.length;
+    estado.respondida = false;
+
+    el("contador").textContent = "Pergunta " + (estado.indice + 1) + " de " + total;
+    el("placar-atual").textContent = estado.acertos + (estado.acertos === 1 ? " acerto" : " acertos");
+    el("progresso").style.width = (estado.indice / total * 100) + "%";
+    el("pergunta").textContent = q.p;
+    el("recado").textContent = "";
+    el("recado").removeAttribute("data-estado");
+    el("btn-proxima").hidden = true;
+
+    var caixa = el("alternativas");
+    caixa.textContent = "";
+    q.alt.forEach(function(texto, i){
+      var b = document.createElement("button");
+      b.className = "alt";
+      b.type = "button";
+      var letra = document.createElement("span");
+      letra.className = "alt-letra";
+      letra.textContent = "ABCD".charAt(i);
+      var t = document.createElement("span");
+      t.textContent = texto;
+      b.appendChild(letra); b.appendChild(t);
+      b.addEventListener("click", function(){ responder(i); });
+      caixa.appendChild(b);
+    });
+  }
+
+  function responder(escolha){
+    if (estado.respondida) return;
+    estado.respondida = true;
+
+    var q = estado.perguntas[estado.indice];
+    var botoes = document.querySelectorAll("#alternativas .alt");
+    Array.prototype.forEach.call(botoes, function(b, i){
+      b.disabled = true;
+      if (i === q.correta) b.classList.add("certa");
+      else if (i === escolha) b.classList.add("errada");
+    });
+
+    var recado = el("recado");
+    if (escolha === q.correta){
+      estado.acertos++;
+      recado.textContent = "Isso mesmo!";
+    } else {
+      recado.textContent = "A resposta certa é a letra " + "ABCD".charAt(q.correta) + ".";
+      recado.setAttribute("data-estado", "errou");
+    }
+    el("placar-atual").textContent = estado.acertos + (estado.acertos === 1 ? " acerto" : " acertos");
+
+    var btn = el("btn-proxima");
+    btn.hidden = false;
+    btn.textContent = (estado.indice + 1 < estado.perguntas.length) ? "Próxima" : "Ver meu resultado";
+    btn.focus();
+  }
+
+  function proxima(){
+    estado.indice++;
+    if (estado.indice < estado.perguntas.length){
+      desenharPergunta();
+    } else {
+      finalizar();
+    }
+  }
+
+  // ---------------- resultado ----------------
+  function finalizar(){
+    estado.segundos = Math.max(1, Math.round((Date.now() - estado.inicio) / 1000));
+    var total = estado.perguntas.length;
+    var a = estado.acertos;
+
+    el("res-acertos").textContent = String(a);
+    el("res-total").textContent = "de " + total;
+    el("res-tempo").textContent = tempoTexto(estado.segundos);
+
+    var pct = a / total;
+    var frase = "Bom começo!";
+    if (pct === 1) frase = "Gabaritou!";
+    else if (pct >= 0.85) frase = "Mandou muito bem!";
+    else if (pct >= 0.6) frase = "Muito bom!";
+    else if (pct >= 0.4) frase = "Está no caminho!";
+    el("res-frase").textContent = frase;
+    el("res-detalhe").textContent = estado.nome + ", você acertou " + a + " de " + total +
+      " em " + tempoTexto(estado.segundos) + ".";
+
+    el("res-aviso").textContent = "";
+    mostrar("tela-resultado");
+    enviarNota();
+  }
+
+  // ---------------- supabase ----------------
+  function cabecalhos(extra){
+    var h = {
+      "apikey": CONFIG.SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + CONFIG.SUPABASE_ANON_KEY,
+      "Content-Type": "application/json"
+    };
+    if (extra) Object.keys(extra).forEach(function(k){ h[k] = extra[k]; });
+    return h;
+  }
+
+  function avisar(texto){
+    var caixa = el("res-aviso");
+    caixa.textContent = "";
+    var p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = texto;
+    caixa.appendChild(p);
+  }
+
+  function enviarNota(){
+    if (!configurado()){
+      avisar("O ranking ainda não está ligado. Preencha o arquivo config.js com os dados do Supabase.");
+      return;
+    }
+    fetch(CONFIG.SUPABASE_URL + "/rest/v1/placar", {
+      method: "POST",
+      headers: cabecalhos({ "Prefer": "return=minimal" }),
+      body: JSON.stringify({
+        nome: estado.nome,
+        quiz: estado.chave,
+        acertos: estado.acertos,
+        total: estado.perguntas.length,
+        segundos: estado.segundos
+      })
+    }).then(function(r){
+      if (!r.ok) throw new Error("falhou");
+    }).catch(function(){
+      avisar("Não deu para salvar sua nota agora. Confira sua internet e tente jogar de novo.");
+    });
+  }
+
+  function carregarRanking(chave){
+    var quiz = QUIZZES[chave];
+    document.body.dataset.tema = quiz.cor;
+    el("rank-turma").textContent = quiz.turma + " · " + quiz.titulo;
+
+    var lista = el("lista-ranking");
+    lista.textContent = "";
+    var carregando = document.createElement("li");
+    carregando.className = "vazio";
+    carregando.textContent = "Carregando…";
+    lista.appendChild(carregando);
+    mostrar("tela-ranking");
+
+    if (!configurado()){
+      lista.textContent = "";
+      var aviso = document.createElement("li");
+      aviso.className = "vazio";
+      aviso.textContent = "O ranking ainda não está ligado. Preencha o config.js com os dados do Supabase.";
+      lista.appendChild(aviso);
+      return;
+    }
+
+    var url = CONFIG.SUPABASE_URL + "/rest/v1/placar" +
+      "?quiz=eq." + encodeURIComponent(chave) +
+      "&select=nome,acertos,total,segundos" +
+      "&order=acertos.desc,segundos.asc" +
+      "&limit=300";
+
+    fetch(url, { headers: cabecalhos() })
+      .then(function(r){ return r.json(); })
+      .then(function(dados){ desenharRanking(dados); })
+      .catch(function(){
+        lista.textContent = "";
+        var erro = document.createElement("li");
+        erro.className = "vazio";
+        erro.textContent = "Não deu para carregar o ranking agora. Tente de novo em instantes.";
+        lista.appendChild(erro);
+      });
+  }
+
+  function desenharRanking(dados){
+    var lista = el("lista-ranking");
+    lista.textContent = "";
+
+    // guarda o melhor resultado de cada nome
+    var melhores = [], vistos = {};
+    (dados || []).forEach(function(d){
+      var chave = String(d.nome || "").toLowerCase();
+      if (!vistos[chave]){ vistos[chave] = true; melhores.push(d); }
+    });
+    melhores = melhores.slice(0, 20);
+
+    if (!melhores.length){
+      var vazio = document.createElement("li");
+      vazio.className = "vazio";
+      vazio.textContent = "Ninguém jogou ainda. Seja o primeiro!";
+      lista.appendChild(vazio);
+      return;
+    }
+
+    var meuNome = estado.nome.toLowerCase();
+    melhores.forEach(function(d, i){
+      var li = document.createElement("li");
+      li.className = "linha";
+      if (meuNome && String(d.nome).toLowerCase() === meuNome) li.classList.add("eu");
+
+      var pos = document.createElement("span");
+      pos.className = "pos";
+      pos.textContent = i === 0 ? "1º" : (i === 1 ? "2º" : (i === 2 ? "3º" : (i + 1) + "º"));
+
+      var quem = document.createElement("span");
+      quem.className = "quem";
+      quem.textContent = d.nome;
+      var tempo = document.createElement("span");
+      tempo.className = "tempo";
+      tempo.textContent = " · " + tempoTexto(d.segundos);
+      quem.appendChild(tempo);
+
+      var nota = document.createElement("span");
+      nota.className = "nota";
+      nota.textContent = d.acertos + "/" + d.total;
+
+      li.appendChild(pos); li.appendChild(quem); li.appendChild(nota);
+      lista.appendChild(li);
+    });
+  }
+
+  // ---------------- ligacoes ----------------
+  montarTurmas();
+  el("nome").addEventListener("input", validar);
+  el("btn-comecar").addEventListener("click", comecar);
+  el("btn-proxima").addEventListener("click", proxima);
+  el("btn-ranking").addEventListener("click", function(){ carregarRanking(estado.chave); });
+  el("btn-denovo").addEventListener("click", function(){ comecar(); });
+  el("btn-voltar").addEventListener("click", function(){ mostrar("tela-inicio"); });
+  el("btn-ver-ranking").addEventListener("click", function(){
+    carregarRanking(estado.chave || Object.keys(QUIZZES)[0]);
+  });
+})();
+</script>
+</body>
+</html>
