@@ -54,3 +54,28 @@ alter table public.placar drop constraint if exists placar_quiz_check;
 
 -- garante o resto do formato atual, caso a tabela venha da versao antiga
 alter table public.placar alter column quiz type text;
+
+
+-- ============================================================
+--  REGRAS CONTRA BAGUNCA NO RANKING
+--
+--  O site nao tem senha: qualquer um que abra o link pode registrar
+--  uma nota, e e assim que ele funciona. O que da para fazer e recusar
+--  no proprio banco aquilo que nao pode ser resultado de uma partida:
+--  nota maior que o total, prova de mil questoes, tempo absurdo,
+--  ou nome usado para colar propaganda.
+--
+--  Isto NAO impede um aluno curioso de mandar uma nota boa demais.
+--  Para um quiz de estudo da turma, isso segue valendo o que ja diz
+--  o LEIA-ME: e um risco conhecido e aceito.
+-- ============================================================
+
+alter table public.placar drop constraint if exists placar_valido;
+alter table public.placar add constraint placar_valido check (
+  acertos <= total                      -- nao da para acertar mais do que tem
+  and total between 1 and 200           -- prova de tamanho plausivel
+  and segundos between 1 and 14400      -- no maximo 4 horas
+  and char_length(quiz) between 1 and 40
+  and nome !~* 'https?://'              -- nome nao serve para divulgar link
+  and nome !~ E'[\\n\\r\\t]'            -- nem para quebrar a lista em varias linhas
+);
