@@ -37,3 +37,20 @@ create policy "qualquer um pode registrar nota"
 
 -- ninguem consegue alterar nem apagar notas pelo site.
 -- Isso so acontece por aqui, no painel do Supabase (Table Editor > placar).
+
+
+-- ============================================================
+--  REPARO DE TABELAS ANTIGAS
+--
+--  A primeira versao deste projeto so aceitava quiz = '3ano' ou '4ano'.
+--  Como o comando la em cima e "create table IF NOT EXISTS", ele nao
+--  altera uma tabela que ja existe -- entao aquela regra velha continuava
+--  recusando os ids de hoje (geo-3ano-ago26) e NENHUMA nota era salva.
+--
+--  As linhas abaixo tiram essa trava. Em banco novo elas nao fazem nada.
+-- ============================================================
+
+alter table public.placar drop constraint if exists placar_quiz_check;
+
+-- garante o resto do formato atual, caso a tabela venha da versao antiga
+alter table public.placar alter column quiz type text;

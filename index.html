@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Simulados da turma</title>
 <meta name="description" content="Simulados com ranking da turma.">
+<meta name="theme-color" content="#FBF9F3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,8 +27,15 @@ body[data-tema="roxo"]{
   --tema:#6A1B9A; --tema-escuro:#4A148C; --tema-fundo:#F3E5F5;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+/* O atributo hidden precisa vencer os display: das classes abaixo.
+   Sem esta linha, .botao{display:block} deixava o "Próxima" na tela
+   antes da criança responder -- e dava para pular a pergunta. */
+[hidden]{display:none !important}
 html{-webkit-text-size-adjust:100%}
-button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
 body{
   font-family:"Nunito",system-ui,sans-serif;
   color:var(--tinta);
@@ -36,8 +44,10 @@ body{
     repeating-linear-gradient(to right, var(--grade) 0 1px, transparent 1px 26px),
     repeating-linear-gradient(to bottom, var(--grade) 0 1px, transparent 1px 26px);
   min-height:100vh;
+  min-height:100dvh;   /* no celular, desconta a barra do navegador */
   line-height:1.5;
   padding:20px 16px calc(40px + env(safe-area-inset-bottom));
+  overflow-wrap:break-word;
 }
 .folha{max-width:560px;margin:0 auto}
 
@@ -132,6 +142,18 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 :focus-visible{outline:3px solid var(--tema);outline-offset:2px}
 
 /* ---------- quiz ---------- */
+.barra-sair{margin-bottom:6px}
+.botao-sair{
+  background:none;border:none;padding:4px 2px;cursor:pointer;
+  font-family:inherit;font-size:13px;font-weight:700;color:var(--tinta-fraca);
+}
+@media (hover:hover){ .botao-sair:hover{color:var(--tinta)} }
+.sair-caixa{
+  margin-bottom:14px;padding:16px;border-radius:var(--raio);
+  background:#fff;border:2px dashed var(--erro);
+}
+.sair-txt{font-weight:700;font-size:16px;text-align:center;margin-bottom:12px}
+.sair-caixa .botoes{margin-top:0}
 .barra-topo{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;
   font-size:14px;font-weight:700;color:var(--tinta-fraca)}
 .trilho{height:9px;background:#fff;border:2px solid var(--tinta);border-radius:99px;overflow:hidden;margin-bottom:22px}
@@ -193,24 +215,107 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 .carimbo-de{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .carimbo-tempo{font-size:13px;font-weight:700;margin-top:4px;opacity:.85}
 .frase{font-size:19px;font-weight:700;margin-bottom:4px}
+.posicao{
+  display:inline-block;margin-top:12px;padding:7px 16px;border-radius:99px;
+  background:var(--tema-fundo);border:2px solid var(--tema);
+  font-family:"Baloo 2",sans-serif;font-weight:800;font-size:17px;color:var(--tema-escuro);
+}
+
+/* ---------- partida guardada ---------- */
+.retomar{
+  background:#fff;border:2px dashed var(--tema);border-radius:var(--raio);
+  padding:16px;margin-bottom:18px;
+}
+.retomar-txt{font-weight:700;font-size:16px;text-align:center;line-height:1.35}
+.retomar .botoes{margin-top:12px}
+
+/* ---------- revisao dos erros ---------- */
+.revisao{
+  margin-top:20px;text-align:left;
+  border-top:1px dashed var(--linha);padding-top:14px;
+}
+.revisao summary{
+  cursor:pointer;font-weight:700;font-size:15px;color:var(--tinta-fraca);
+  list-style:none;display:flex;align-items:center;gap:7px;
+}
+.revisao summary::-webkit-details-marker{display:none}
+.revisao summary::before{content:"›";font-size:19px;line-height:1;transition:transform .15s}
+.revisao[open] summary::before{transform:rotate(90deg)}
+@media (hover:hover){ .revisao summary:hover{color:var(--tinta)} }
+.erros{list-style:none;margin-top:12px;display:grid;gap:10px}
+.erro-item{
+  border:2px solid var(--linha);border-radius:var(--raio);
+  padding:12px 14px;background:var(--papel);
+}
+.erro-p{font-weight:700;font-size:16px;line-height:1.35;margin-bottom:9px}
+.erro-linha{display:flex;gap:8px;align-items:flex-start;font-size:15px;line-height:1.35}
+.erro-linha + .erro-linha{margin-top:5px}
+.erro-tag{
+  flex:none;margin-top:2px;padding:2px 8px;border-radius:99px;
+  font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+}
+.erro-sua .erro-tag{background:var(--erro-fundo);color:var(--erro)}
+.erro-certa .erro-tag{background:var(--tema-fundo);color:var(--tema-escuro)}
+.erro-certa{font-weight:700}
 
 /* ---------- ranking ---------- */
-.lista{list-style:none;margin-top:14px}
+.rank-cabeca{text-align:center}
+.trofeu{
+  display:block;width:62px;height:62px;margin:2px auto 10px;
+  animation:pousa .45s cubic-bezier(.2,1.4,.4,1) both;
+}
+@keyframes pousa{
+  0%{transform:translateY(-14px) scale(.7);opacity:0}
+  100%{transform:none;opacity:1}
+}
+.lista{list-style:none;margin-top:16px}
 .linha{
   display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;
   border:2px solid transparent;
 }
 .linha + .linha{border-top:1px dashed var(--linha)}
-.linha.eu{border-color:var(--tema);background:var(--tema-fundo)}
 .pos{
-  width:30px;flex:none;text-align:center;font-family:"Baloo 2",sans-serif;
+  width:34px;flex:none;text-align:center;font-family:"Baloo 2",sans-serif;
   font-weight:800;font-size:17px;color:var(--tinta-fraca);
 }
-.linha:nth-child(1) .pos,.linha:nth-child(2) .pos,.linha:nth-child(3) .pos{color:var(--tema);font-size:20px}
 .quem{flex:1;font-weight:700;min-width:0;overflow-wrap:anywhere}
 .tempo{font-size:13px;color:var(--tinta-fraca);font-weight:600}
 .nota{
   flex:none;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:18px;color:var(--tema-escuro);
+}
+
+/* podio: as tres primeiras posicoes ganham medalha */
+.linha[data-medalha]{
+  border:2px solid var(--m-borda);background:var(--m-fundo);
+  margin-bottom:8px;padding:13px 12px;
+}
+.linha[data-medalha="1"]{--m:#EFB01C;--m-borda:#C58A00;--m-fundo:#FFF8E1}
+.linha[data-medalha="2"]{--m:#A3ADB6;--m-borda:#7C868E;--m-fundo:#F3F5F7}
+.linha[data-medalha="3"]{--m:#C4813F;--m-borda:#93602A;--m-fundo:#FAF0E6}
+.linha[data-medalha] .pos{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--m);border:2px solid var(--m-borda);
+  color:#fff;font-size:15px;text-shadow:0 1px 0 rgba(0,0,0,.25);
+}
+.linha[data-medalha="1"]{padding:15px 12px}
+.linha[data-medalha="1"] .pos{width:40px;height:40px;font-size:18px}
+.linha[data-medalha="1"] .quem{font-size:18px}
+.linha[data-medalha] .nota{color:var(--m-borda)}
+
+/* a linha de quem esta jogando */
+.linha.eu{border:2px solid var(--tema);background:var(--tema-fundo)}
+.linha.eu[data-medalha]{border-color:var(--m-borda);background:var(--m-fundo)}
+.selo-voce{
+  display:inline-block;margin-left:7px;padding:1px 8px;border-radius:99px;
+  background:var(--tema);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;vertical-align:1px;
+}
+.linha.fora{
+  margin-top:10px;border:2px dashed var(--tema);background:var(--tema-fundo);
+}
+.rank-info{
+  text-align:center;font-size:13px;color:var(--tinta-fraca);
+  font-weight:600;margin-top:14px;
 }
 .vazio{text-align:center;color:var(--tinta-fraca);padding:24px 8px;font-size:15px}
 .aviso{
@@ -230,7 +335,11 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   .carimbo-num{font-size:48px}
   .botao{font-size:18px;padding:14px}
   .linha{padding:10px 6px;gap:9px}
+  .linha[data-medalha]{padding:11px 8px}
+  .linha[data-medalha="1"]{padding:12px 8px}
   .nota{font-size:17px}
+  .trofeu{width:54px;height:54px}
+  .selo-voce{margin-left:5px;padding:1px 6px}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -243,6 +352,14 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
   <!-- ============ TELA 1: INICIO ============ -->
   <section class="tela ativa" id="tela-inicio">
+    <div class="retomar" id="retomar" hidden>
+      <p class="retomar-txt" id="retomar-txt"></p>
+      <div class="botoes">
+        <button class="botao" id="btn-retomar">Continuar de onde parei</button>
+        <button class="botao botao-vazado" id="btn-descartar">Começar do zero</button>
+      </div>
+    </div>
+
     <div class="cabeca">
       <p class="olho">Estudar para a prova</p>
       <h1>Simulados da turma</h1>
@@ -274,11 +391,23 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
   <!-- ============ TELA 2: QUIZ ============ -->
   <section class="tela" id="tela-quiz">
+    <div class="barra-sair">
+      <button type="button" class="botao-sair" id="btn-sair">‹ Sair do simulado</button>
+    </div>
+
     <div class="barra-topo">
       <span id="contador">Pergunta 1</span>
       <span id="placar-atual">0 acertos</span>
     </div>
     <div class="trilho"><div class="progresso" id="progresso"></div></div>
+
+    <div class="sair-caixa" id="sair-caixa" hidden>
+      <p class="sair-txt">Quer mesmo sair? Esta partida vai ser perdida.</p>
+      <div class="botoes">
+        <button class="botao" id="btn-sair-nao">Continuar jogando</button>
+        <button class="botao botao-vazado" id="btn-sair-sim">Sim, quero sair</button>
+      </div>
+    </div>
 
     <div class="cartao">
       <p class="pergunta" id="pergunta"></p>
@@ -309,7 +438,14 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       </div>
       <p class="frase" id="res-frase"></p>
       <p class="apoio" id="res-detalhe"></p>
+      <p class="posicao" id="res-posicao" hidden></p>
       <div id="res-aviso"></div>
+
+      <details class="revisao" id="box-revisao" hidden>
+        <summary id="revisao-titulo">Ver o que você errou</summary>
+        <ol class="erros" id="lista-erros"></ol>
+      </details>
+
       <div class="botoes">
         <button class="botao" id="btn-ranking">Ver o ranking</button>
         <button class="botao botao-vazado" id="btn-denovo">Jogar de novo</button>
@@ -320,10 +456,26 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   <!-- ============ TELA 4: RANKING ============ -->
   <section class="tela" id="tela-ranking">
     <div class="cartao">
-      <p class="olho" id="rank-turma">Ranking</p>
-      <h2>Melhores da turma</h2>
-      <p class="apoio">Quem acertou mais fica na frente. Empatou? Ganha quem foi mais rápido.</p>
+      <div class="rank-cabeca">
+        <svg class="trofeu" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+          <path d="M13 6h22v10a11 11 0 0 1-22 0V6Z" fill="#F2B705" stroke="#8A6100"
+                stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="M13 10H7.5c0 5.5 2.6 8.6 6 9.2" fill="none" stroke="#8A6100"
+                stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M35 10h5.5c0 5.5-2.6 8.6-6 9.2" fill="none" stroke="#8A6100"
+                stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M24 27v6" stroke="#8A6100" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M15.5 42h17l-2.5-8h-12l-2.5 8Z" fill="#F2B705" stroke="#8A6100"
+                stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="m24 9 1.6 3.4 3.6.5-2.6 2.6.6 3.7-3.2-1.8-3.2 1.8.6-3.7-2.6-2.6 3.6-.5L24 9Z"
+                fill="#FFF3C4"/>
+        </svg>
+        <p class="olho" id="rank-turma">Ranking</p>
+        <h2>Melhores da turma</h2>
+        <p class="apoio">Quem acertou mais fica na frente. Empatou? Ganha quem foi mais rápido.</p>
+      </div>
       <ol class="lista" id="lista-ranking"></ol>
+      <p class="rank-info" id="rank-info"></p>
       <div class="botoes">
         <button class="botao botao-vazado" id="btn-voltar">Voltar ao início</button>
       </div>
@@ -342,15 +494,78 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   // ---------------- banco de perguntas ----------------
   // Cada arquivo da pasta perguntas/ se registra aqui ao ser carregado.
   var BANCO = {};
-  var carregados = {};
+  var carregando = {};
+  var tentativas = {};
   window.registrarPerguntas = function(id, lista){ BANCO[id] = lista; };
 
   var estado = {
     item: null, nome: "",
-    perguntas: [], indice: 0, acertos: 0,
-    inicio: 0, segundos: 0, respondida: false, escolha: null,
+    perguntas: [], indice: 0, acertos: 0, erros: [],
+    inicio: 0, decorrido: 0, segundos: 0, respondida: false, escolha: null,
     filtro: null
   };
+
+  // ---------------- memoria do navegador ----------------
+  // guarda o nome, para nao digitar de novo a cada partida
+  var CHAVE_NOME = "simulados:nome";
+  function guardarNome(valor){
+    try { localStorage.setItem(CHAVE_NOME, valor); } catch (e) {}
+  }
+  function nomeGuardado(){
+    try { return localStorage.getItem(CHAVE_NOME) || ""; } catch (e) { return ""; }
+  }
+
+  // guarda a partida em andamento, para poder continuar depois
+  var CHAVE_PARTIDA = "simulados:partida";
+  var VALIDADE = 6 * 60 * 60 * 1000;   // 6 horas
+  var pendente = null;
+
+  // o relogio so corre enquanto a partida esta aberta: quem fecha o site
+  // e volta uma hora depois nao carrega essa hora nas costas
+  function marcarTempo(){
+    if (!estado.inicio) return;
+    estado.decorrido += Math.max(0, (Date.now() - estado.inicio) / 1000);
+    estado.inicio = Date.now();
+  }
+
+  function salvarPartida(){
+    if (!estado.item || !estado.perguntas.length) return;
+    marcarTempo();
+    try {
+      localStorage.setItem(CHAVE_PARTIDA, JSON.stringify({
+        v: 1,
+        quando: Date.now(),
+        quiz: estado.item.id,
+        nome: estado.nome,
+        perguntas: estado.perguntas,
+        indice: estado.indice,
+        acertos: estado.acertos,
+        erros: estado.erros,
+        decorrido: estado.decorrido
+      }));
+    } catch (e) {}
+  }
+
+  function limparPartida(){
+    pendente = null;
+    try { localStorage.removeItem(CHAVE_PARTIDA); } catch (e) {}
+  }
+
+  function partidaGuardada(){
+    var bruto = "";
+    try { bruto = localStorage.getItem(CHAVE_PARTIDA) || ""; } catch (e) { return null; }
+    if (!bruto) return null;
+
+    var d = null;
+    try { d = JSON.parse(bruto); } catch (e) { return null; }
+
+    if (!d || d.v !== 1) return null;
+    if (!d.perguntas || !d.perguntas.length) return null;
+    if (!(d.indice >= 0) || d.indice >= d.perguntas.length) return null;
+    if (Date.now() - d.quando > VALIDADE) return null;
+    if (!acharPorId(d.quiz)) return null;   // simulado saiu do catalogo
+    return d;
+  }
 
   var el = function(id){ return document.getElementById(id); };
   var telas = ["tela-inicio","tela-quiz","tela-resultado","tela-ranking"];
@@ -397,7 +612,9 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
     var selo = document.createElement("span");
     selo.className = "quiz-selo";
-    selo.textContent = item.turma.replace(" ano", "º");
+    // "3º ano" -> "3º"  (pega so o numero e devolve o "º" uma vez)
+    var num = String(item.turma).match(/\d+/);
+    selo.textContent = num ? num[0] + "º" : item.turma;
 
     var txt = document.createElement("span");
     txt.className = "quiz-txt";
@@ -460,12 +677,23 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
   function carregarPerguntas(item, pronto){
     if (BANCO[item.id]) { pronto(true); return; }
-    if (carregados[item.id]) { pronto(false); return; }
-    carregados[item.id] = true;
+    if (carregando[item.id]) return;   // ja tem um pedido em andamento
+    carregando[item.id] = true;
+
+    // se a primeira tentativa falhou, a seguinte pede o arquivo de novo
+    // em vez de reaproveitar o erro que ficou no cache do navegador
+    tentativas[item.id] = (tentativas[item.id] || 0) + 1;
+
     var s = document.createElement("script");
-    s.src = item.arquivo;
-    s.onload = function(){ pronto(!!BANCO[item.id]); };
-    s.onerror = function(){ pronto(false); };
+    s.src = item.arquivo + (tentativas[item.id] > 1 ? "?tentativa=" + tentativas[item.id] : "");
+
+    function terminou(ok){
+      carregando[item.id] = false;
+      if (!ok && s.parentNode) s.parentNode.removeChild(s);
+      pronto(ok);
+    }
+    s.onload = function(){ terminou(!!BANCO[item.id]); };
+    s.onerror = function(){ terminou(false); };
     document.body.appendChild(s);
   }
 
@@ -477,9 +705,11 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     el("sub-home").textContent = "Carregando as perguntas…";
 
     carregarPerguntas(item, function(ok){
+      // se a criança ja trocou de simulado, esta resposta nao vale mais
+      if (estado.item !== item) return;
       if (!ok){
         el("sub-home").textContent =
-          "Não deu para carregar as perguntas deste simulado. Tente atualizar a página.";
+          "Não deu para carregar as perguntas deste simulado. Toque nele de novo para tentar mais uma vez.";
         estado.item = null;
         marcarSelecionado();
         return;
@@ -509,7 +739,10 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   }
 
   function comecar(){
-    estado.nome = el("nome").value.trim().replace(/\s+/g, " ").slice(0, 18);
+    var digitado = el("nome").value.trim().replace(/\s+/g, " ").slice(0, 18);
+    if (digitado) estado.nome = digitado;
+    guardarNome(estado.nome);
+
     var sorteadas = embaralhar(BANCO[estado.item.id]).slice(0, quantasCaem(estado.item));
     estado.perguntas = sorteadas.map(function(p){
       var ordem = embaralhar([0,1,2,3]);
@@ -521,9 +754,58 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     });
     estado.indice = 0;
     estado.acertos = 0;
+    estado.erros = [];
+    estado.decorrido = 0;
     estado.inicio = Date.now();
+    el("sair-caixa").hidden = true;
+    el("retomar").hidden = true;
     mostrar("tela-quiz");
     desenharPergunta();
+  }
+
+  function retomar(d){
+    var item = acharPorId(d.quiz);
+    if (!item) { limparPartida(); return; }
+
+    estado.item = item;
+    document.body.dataset.tema = item.cor;
+    if (d.nome) estado.nome = d.nome;
+    estado.perguntas = d.perguntas;
+    estado.indice = d.indice;
+    estado.acertos = d.acertos || 0;
+    estado.erros = d.erros || [];
+    estado.decorrido = d.decorrido || 0;
+    estado.inicio = Date.now();
+
+    el("retomar").hidden = true;
+    el("sair-caixa").hidden = true;
+    mostrar("tela-quiz");
+    desenharPergunta();
+  }
+
+  function oferecerRetomada(){
+    pendente = partidaGuardada();
+    if (!pendente) return;
+
+    var item = acharPorId(pendente.quiz);
+    el("retomar-txt").textContent =
+      "Você parou no meio de " + item.materia + " — " + item.titulo +
+      ", na pergunta " + (pendente.indice + 1) + " de " + pendente.perguntas.length + ".";
+    el("retomar").hidden = false;
+  }
+
+  function sair(){
+    limparPartida();
+    estado.perguntas = [];
+    estado.indice = 0;
+    estado.acertos = 0;
+    estado.erros = [];
+    estado.decorrido = 0;
+    estado.inicio = 0;
+    estado.respondida = false;
+    estado.escolha = null;
+    el("sair-caixa").hidden = true;
+    mostrar("tela-inicio");
   }
 
   function desenharPergunta(){
@@ -532,6 +814,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     estado.respondida = false;
     estado.escolha = null;
     el("confirma").hidden = true;
+    el("sair-caixa").hidden = true;
 
     el("contador").textContent = "Pergunta " + (estado.indice + 1) + " de " + total;
     el("placar-atual").textContent = estado.acertos + (estado.acertos === 1 ? " acerto" : " acertos");
@@ -556,11 +839,23 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       b.addEventListener("click", function(){ selecionar(i); });
       caixa.appendChild(b);
     });
+
+    // guarda sempre no comeco da pergunta: quem voltar refaz esta,
+    // sem risco de contar o mesmo acerto duas vezes
+    salvarPartida();
   }
+
+  // Trava curta contra o "toque fantasma": no celular, dois toques rapidos
+  // no mesmo lugar faziam o segundo cair no botao que acabou de aparecer ali,
+  // pulando a pergunta antes da criança ler a resposta.
+  var travaAte = 0;
+  function travar(){ travaAte = Date.now() + 350; }
+  function travado(){ return Date.now() < travaAte; }
 
   function selecionar(i){
     if (estado.respondida) return;
     estado.escolha = i;
+    travar();
 
     Array.prototype.forEach.call(document.querySelectorAll("#alternativas .alt"),
       function(b, n){ b.classList.toggle("escolhida", n === i); });
@@ -581,7 +876,9 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
   function responder(){
     if (estado.respondida || estado.escolha === null) return;
+    if (travado()) return;
     estado.respondida = true;
+    travar();
     var escolha = estado.escolha;
     el("confirma").hidden = true;
 
@@ -601,6 +898,11 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     } else {
       recado.textContent = "A resposta certa é a letra " + "ABCD".charAt(q.correta) + ".";
       recado.setAttribute("data-estado", "errou");
+      estado.erros.push({
+        p: q.p,
+        marcou: q.alt[escolha],
+        certa: q.alt[q.correta]
+      });
     }
     el("placar-atual").textContent = estado.acertos + (estado.acertos === 1 ? " acerto" : " acertos");
 
@@ -611,6 +913,10 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   }
 
   function proxima(){
+    // so avança depois de responder de verdade. Vale como trava final:
+    // nenhum caminho da tela pula uma pergunta sem resposta.
+    if (!estado.respondida) return;
+    if (travado()) return;
     estado.indice++;
     if (estado.indice < estado.perguntas.length){
       desenharPergunta();
@@ -620,8 +926,54 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   }
 
   // ---------------- resultado ----------------
+  function linhaErro(tag, texto, classe){
+    var p = document.createElement("p");
+    p.className = "erro-linha " + classe;
+    var t = document.createElement("span");
+    t.className = "erro-tag";
+    t.textContent = tag;
+    var v = document.createElement("span");
+    v.textContent = texto;
+    p.appendChild(t); p.appendChild(v);
+    return p;
+  }
+
+  function desenharRevisao(){
+    var caixa = el("box-revisao");
+    var lista = el("lista-erros");
+    lista.textContent = "";
+    caixa.open = false;
+
+    if (!estado.erros.length){
+      caixa.hidden = true;
+      return;
+    }
+
+    el("revisao-titulo").textContent = estado.erros.length === 1
+      ? "Ver a pergunta que você errou"
+      : "Ver as " + estado.erros.length + " perguntas que você errou";
+
+    estado.erros.forEach(function(e){
+      var li = document.createElement("li");
+      li.className = "erro-item";
+
+      var p = document.createElement("p");
+      p.className = "erro-p";
+      p.textContent = e.p;
+
+      li.appendChild(p);
+      li.appendChild(linhaErro("você", e.marcou, "erro-sua"));
+      li.appendChild(linhaErro("certa", e.certa, "erro-certa"));
+      lista.appendChild(li);
+    });
+
+    caixa.hidden = false;
+  }
+
   function finalizar(){
-    estado.segundos = Math.max(1, Math.round((Date.now() - estado.inicio) / 1000));
+    marcarTempo();
+    limparPartida();
+    estado.segundos = Math.max(1, Math.round(estado.decorrido));
     var total = estado.perguntas.length;
     var a = estado.acertos;
 
@@ -640,6 +992,8 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       " em " + tempoTexto(estado.segundos) + ".";
 
     el("res-aviso").textContent = "";
+    el("res-posicao").hidden = true;
+    desenharRevisao();
     mostrar("tela-resultado");
     enviarNota();
   }
@@ -664,6 +1018,52 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
     caixa.appendChild(p);
   }
 
+  function urlRanking(id){
+    return CONFIG.SUPABASE_URL + "/rest/v1/placar" +
+      "?quiz=eq." + encodeURIComponent(id) +
+      "&select=nome,acertos,total,segundos" +
+      "&order=acertos.desc,segundos.asc" +
+      "&limit=300";
+  }
+
+  // a lista ja vem ordenada; guarda so o melhor resultado de cada nome
+  function melhoresDe(dados){
+    var lista = [], vistos = {};
+    (dados || []).forEach(function(d){
+      var chave = String(d.nome || "").toLowerCase();
+      if (!vistos[chave]){ vistos[chave] = true; lista.push(d); }
+    });
+    return lista;
+  }
+
+  function posicaoDe(lista, nome){
+    var alvo = String(nome || "").toLowerCase();
+    if (!alvo) return 0;
+    for (var i = 0; i < lista.length; i++){
+      if (String(lista[i].nome).toLowerCase() === alvo) return i + 1;
+    }
+    return 0;
+  }
+
+  function mostrarPosicao(){
+    var alvo = el("res-posicao");
+    alvo.hidden = true;
+    if (!configurado() || !estado.item) return;
+
+    fetch(urlRanking(estado.item.id), { headers: cabecalhos() })
+      .then(function(r){ return r.json(); })
+      .then(function(dados){
+        var lista = melhoresDe(dados);
+        var pos = posicaoDe(lista, estado.nome);
+        if (!pos) return;
+        alvo.textContent = pos === 1
+          ? "Você está em 1º lugar!"
+          : "Você está em " + pos + "º lugar de " + lista.length + ".";
+        alvo.hidden = false;
+      })
+      .catch(function(){});
+  }
+
   function enviarNota(){
     if (!configurado()){
       avisar("O ranking ainda não está ligado. Preencha o arquivo config.js com os dados do Supabase.");
@@ -681,6 +1081,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       })
     }).then(function(r){
       if (!r.ok) throw new Error("falhou");
+      mostrarPosicao();
     }).catch(function(){
       avisar("Não deu para salvar sua nota agora. Confira sua internet e tente jogar de novo.");
     });
@@ -693,6 +1094,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
 
     var lista = el("lista-ranking");
     lista.textContent = "";
+    el("rank-info").textContent = "";
     var carregando = document.createElement("li");
     carregando.className = "vazio";
     carregando.textContent = "Carregando…";
@@ -708,13 +1110,7 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       return;
     }
 
-    var url = CONFIG.SUPABASE_URL + "/rest/v1/placar" +
-      "?quiz=eq." + encodeURIComponent(item.id) +
-      "&select=nome,acertos,total,segundos" +
-      "&order=acertos.desc,segundos.asc" +
-      "&limit=300";
-
-    fetch(url, { headers: cabecalhos() })
+    fetch(urlRanking(item.id), { headers: cabecalhos() })
       .then(function(r){ return r.json(); })
       .then(function(dados){ desenharRanking(dados); })
       .catch(function(){
@@ -726,17 +1122,47 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       });
   }
 
+  function linhaRanking(d, posicao, souEu){
+    var li = document.createElement("li");
+    li.className = "linha";
+    if (souEu) li.classList.add("eu");
+    if (posicao <= 3) li.setAttribute("data-medalha", String(posicao));
+
+    var pos = document.createElement("span");
+    pos.className = "pos";
+    pos.textContent = posicao <= 3 ? String(posicao) : posicao + "º";
+
+    var quem = document.createElement("span");
+    quem.className = "quem";
+    quem.appendChild(document.createTextNode(d.nome));
+
+    var tempo = document.createElement("span");
+    tempo.className = "tempo";
+    tempo.textContent = " · " + tempoTexto(d.segundos);
+    quem.appendChild(tempo);
+
+    if (souEu){
+      var selo = document.createElement("span");
+      selo.className = "selo-voce";
+      selo.textContent = "você";
+      quem.appendChild(selo);
+    }
+
+    var nota = document.createElement("span");
+    nota.className = "nota";
+    nota.textContent = d.acertos + "/" + d.total;
+
+    li.appendChild(pos); li.appendChild(quem); li.appendChild(nota);
+    return li;
+  }
+
   function desenharRanking(dados){
     var lista = el("lista-ranking");
+    var info = el("rank-info");
     lista.textContent = "";
+    info.textContent = "";
 
-    // guarda o melhor resultado de cada nome
-    var melhores = [], vistos = {};
-    (dados || []).forEach(function(d){
-      var chave = String(d.nome || "").toLowerCase();
-      if (!vistos[chave]){ vistos[chave] = true; melhores.push(d); }
-    });
-    melhores = melhores.slice(0, 20);
+    var melhores = melhoresDe(dados);
 
     if (!melhores.length){
       var vazio = document.createElement("li");
@@ -746,31 +1172,22 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
       return;
     }
 
-    var meuNome = estado.nome.toLowerCase();
-    melhores.forEach(function(d, i){
-      var li = document.createElement("li");
-      li.className = "linha";
-      if (meuNome && String(d.nome).toLowerCase() === meuNome) li.classList.add("eu");
-
-      var pos = document.createElement("span");
-      pos.className = "pos";
-      pos.textContent = i === 0 ? "1º" : (i === 1 ? "2º" : (i === 2 ? "3º" : (i + 1) + "º"));
-
-      var quem = document.createElement("span");
-      quem.className = "quem";
-      quem.textContent = d.nome;
-      var tempo = document.createElement("span");
-      tempo.className = "tempo";
-      tempo.textContent = " · " + tempoTexto(d.segundos);
-      quem.appendChild(tempo);
-
-      var nota = document.createElement("span");
-      nota.className = "nota";
-      nota.textContent = d.acertos + "/" + d.total;
-
-      li.appendChild(pos); li.appendChild(quem); li.appendChild(nota);
-      lista.appendChild(li);
+    var minhaPos = posicaoDe(melhores, estado.nome);
+    var topo = melhores.slice(0, 20);
+    topo.forEach(function(d, i){
+      lista.appendChild(linhaRanking(d, i + 1, minhaPos === i + 1));
     });
+
+    // quem ficou fora do top 20 ainda ve a propria posicao
+    if (minhaPos > topo.length){
+      var minha = linhaRanking(melhores[minhaPos - 1], minhaPos, true);
+      minha.classList.add("fora");
+      lista.appendChild(minha);
+    }
+
+    info.textContent = melhores.length === 1
+      ? "1 pessoa já jogou este simulado."
+      : melhores.length + " pessoas já jogaram este simulado.";
   }
 
   // ---------------- inicio ----------------
@@ -796,8 +1213,30 @@ input[type="text"]:focus{outline:none;border-color:var(--tema)}
   montarMenu();
   lerLinkDireto();
 
+  // nome de quem jogou da ultima vez neste aparelho
+  estado.nome = nomeGuardado();
+  if (estado.nome) el("nome").value = estado.nome;
+  validar();
+
+  oferecerRetomada();
+
   el("nome").addEventListener("input", validar);
   el("btn-comecar").addEventListener("click", comecar);
+  el("btn-sair").addEventListener("click", function(){
+    el("sair-caixa").hidden = false;
+    el("btn-sair-nao").focus();
+  });
+  el("btn-sair-nao").addEventListener("click", function(){
+    el("sair-caixa").hidden = true;
+  });
+  el("btn-sair-sim").addEventListener("click", sair);
+  el("btn-retomar").addEventListener("click", function(){
+    if (pendente) retomar(pendente);
+  });
+  el("btn-descartar").addEventListener("click", function(){
+    limparPartida();
+    el("retomar").hidden = true;
+  });
   el("btn-confirmar").addEventListener("click", responder);
   el("btn-trocar").addEventListener("click", trocar);
   el("btn-proxima").addEventListener("click", proxima);
