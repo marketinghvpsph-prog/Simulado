@@ -30,7 +30,7 @@ const CATALOGO = [
     cor: "verde",
     arquivo: "perguntas/geo-3ano-ago26.js",
     sorteia: 40,
-    ativo: true,
+    ativo: false,
   },
 
   {
@@ -40,6 +40,28 @@ const CATALOGO = [
     turma: "4º ano",
     cor: "roxo",
     arquivo: "perguntas/geo-4ano-ago26.js",
+    sorteia: 40,
+    ativo: false,
+  },
+
+  {
+    id: "port-3ano-ago26",
+    materia: "Português",
+    titulo: "Leitura, ortografia e pontuação",
+    turma: "3º ano",
+    cor: "verde",
+    arquivo: "perguntas/port-3ano-ago26.js",
+    sorteia: 40,
+    ativo: true,
+  },
+
+  {
+    id: "port-4ano-ago26",
+    materia: "Português",
+    titulo: "Leitura, gramática e acentuação",
+    turma: "4º ano",
+    cor: "roxo",
+    arquivo: "perguntas/port-4ano-ago26.js",
     sorteia: 40,
     ativo: true,
   },

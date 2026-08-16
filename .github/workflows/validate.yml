@@ -1,0 +1,31 @@
+name: Validar simulados
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validar sintaxe dos arquivos JavaScript
+        run: |
+          node --check catalogo.js
+          node --check config.js
+          for arquivo in perguntas/*.js; do node --check "$arquivo"; done
+
+      - name: Validar catálogo e bancos de questões
+        run: node tests/validate-catalog.js

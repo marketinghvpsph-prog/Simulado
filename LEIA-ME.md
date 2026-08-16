@@ -3,13 +3,16 @@
 ## Os arquivos
 
 ```
-index.html            o site. Você não precisa mexer nunca.
-config.js             os dados do Supabase (mexe uma vez só).
-catalogo.js           a lista de simulados. É AQUI que você mexe.
+index.html            o site.
+config.js             configuração pública do Supabase.
+catalogo.js           a lista de simulados.
 supabase.sql          o código do banco de dados.
 perguntas/            uma pasta com um arquivo por simulado.
   geo-3ano-ago26.js
   geo-4ano-ago26.js
+  port-3ano-ago26.js
+  port-4ano-ago26.js
+tests/                validações automáticas do catálogo e das questões.
 ```
 
 A ideia é simples: o `catalogo.js` diz **quais simulados existem**, e cada arquivo dentro de `perguntas/` guarda **as perguntas de um simulado só**.
@@ -18,11 +21,12 @@ A ideia é simples: o `catalogo.js` diz **quais simulados existem**, e cada arqu
 
 ## Como o site vai para o ar
 
-Os arquivos de verdade são **estes aqui, no seu computador**. Publicar é um comando que o Claude roda no VS Code — em segundos a Vercel atualiza o site.
+O GitHub é a fonte principal do projeto e está conectado à Vercel.
 
-O GitHub guarda uma **cópia de segurança**, e só isso. Ele não publica nada: a Vercel não está ligada a ele de propósito, para o site mudar apenas quando você mandar.
-
-> Por isso, **editar pelo site do GitHub não muda o simulado dos alunos**. Peça as mudanças aqui.
+- Cada branch enviada ao GitHub gera uma versão de teste na Vercel.
+- Alterações enviadas para `main` atualizam a produção.
+- Antes de trabalhar pelo VS Code, execute `git pull origin main` para não editar uma cópia antiga.
+- Prefira revisar a versão de teste antes de juntar uma branch à `main`.
 
 ---
 
@@ -70,7 +74,7 @@ Abra o `catalogo.js`, copie o modelo que está comentado no fim do arquivo e pre
 },
 ```
 
-Salve o arquivo e peça para publicar ("sobe isso pro ar"). Em segundos está no site.
+Salve o arquivo em uma branch, envie ao GitHub e confira a versão de teste criada pela Vercel. Depois da aprovação, junte a branch à `main` para publicar.
 
 ### O padrão dos nomes
 
@@ -99,6 +103,8 @@ O endereço do site abre o menu com todos os simulados. Mas você pode mandar no
 ```
 simulado-da-turma.vercel.app/?q=geo-3ano-ago26
 simulado-da-turma.vercel.app/?q=geo-4ano-ago26
+simulado-da-turma.vercel.app/?q=port-3ano-ago26
+simulado-da-turma.vercel.app/?q=port-4ano-ago26
 ```
 
 Quem abrir esse link já cai na tela certa, com o simulado selecionado — sem risco de clicar no errado. Tem um "Ver todos os simulados" logo abaixo para quem quiser os outros.
