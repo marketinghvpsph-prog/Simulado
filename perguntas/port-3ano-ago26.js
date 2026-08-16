@@ -164,9 +164,9 @@ registrarPerguntas("port-3ano-ago26", [
 
   // ---- 23 ----
   {
-    p: "Qual alternativa apresenta somente substantivos próprios?",
-    alt: ["Brasil e Giovanna", "escola e Salvador", "menino e Paulo", "rio e cidade"],
-    correta: 0,
+    p: "Para descobrir o gênero do substantivo, podemos observar os artigos o e a. Qual opção está correta?",
+    alt: ["a feijão e o farinha", "o feijão e a farinha", "o bola e a sal", "a pão e o fazenda"],
+    correta: 1,
   },
 
   // ---- 24 ----
@@ -185,9 +185,9 @@ registrarPerguntas("port-3ano-ago26", [
 
   // ---- 26 ----
   {
-    p: "Na expressão 'flores perfumadas', o adjetivo 'perfumadas' se refere a:",
-    alt: ["flores", "perfume", "jardim", "folhas"],
-    correta: 0,
+    p: "Na frase 'Os pais de Antônio são sul-africanos', qual palavra exerce a função de adjetivo e indica origem?",
+    alt: ["pais", "Antônio", "são", "sul-africanos"],
+    correta: 3,
   },
 
   // ---- 27 ----
@@ -199,16 +199,16 @@ registrarPerguntas("port-3ano-ago26", [
 
   // ---- 28 ----
   {
-    p: "Passe 'o gato esperto' para o feminino. Qual é a forma correta?",
-    alt: ["a gato esperta", "a gata esperta", "a gata esperto", "o gata esperta"],
-    correta: 1,
+    p: "Qual alternativa apresenta corretamente o masculino e o feminino do mesmo animal?",
+    alt: ["bode e cabra; cão e cadela", "bode e égua; cão e tigresa", "carneiro e galinha; galo e vaca", "cavalo e ovelha; zangão e cadela"],
+    correta: 0,
   },
 
   // ---- 29 ----
   {
-    p: "Passe 'a borboleta colorida' para o plural. Qual é a forma correta?",
-    alt: ["as borboletas coloridas", "as borboleta colorida", "a borboletas coloridas", "as borboletas colorida"],
-    correta: 0,
+    p: "Qual grupo apresenta somente substantivos femininos?",
+    alt: ["o sal, o pão, o chuveiro", "a bola, a espiga, a cachoeira", "a farinha, o milho, a fazenda", "o feijão, a torta, o bolo"],
+    correta: 1,
   },
 
   // ---- 30 ----
@@ -248,8 +248,8 @@ registrarPerguntas("port-3ano-ago26", [
 
   // ---- 35 ----
   {
-    p: "Qual alternativa completa corretamente 'ca__orro, ni__o, mi__o'?",
-    alt: ["nh, ch, lh", "ch, nh, lh", "lh, nh, ch", "ch, lh, nh"],
+    p: "Ao acrescentar a letra h, quais novas palavras são formadas por cama, sono e tela?",
+    alt: ["calma, sonho e telha", "chama, sonho e telha", "chama, sonho e tela", "cama, sono e telha"],
     correta: 1,
   },
 

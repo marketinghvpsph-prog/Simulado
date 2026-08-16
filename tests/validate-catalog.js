@@ -95,6 +95,8 @@ for (const pattern of [
   /cenário/,
   /conflito|problema principal/,
   /substantivo/,
+  /substantivo masculino|substantivo feminino|gênero do substantivo/,
+  /bode.*cabra|boi.*vaca|cavalo.*égua|galo.*galinha/,
   /adjetivo/,
   /\bch\b|cachorro|chuva/,
   /\bnh\b|ninho|banho/,
@@ -104,6 +106,18 @@ for (const pattern of [
   /texto não verbal|símbolo|imagem/,
   /opinião.*porque|opinião.*justific/,
 ]) assert(pattern.test(third), `3º ano sem cobertura: ${pattern}`);
+
+const thirdItem = catalog.find((x) => x.id === 'port-3ano-ago26');
+const thirdQuestions = loadQuestions(thirdItem.arquivo, thirdItem.id);
+const articleQuestion = thirdQuestions.find((q) =>
+  /gênero do substantivo/i.test(q.p) && /artigos o e a/i.test(q.p)
+);
+assert(articleQuestion, '3º ano sem questão específica sobre artigos e gênero do substantivo');
+assert.strictEqual(
+  articleQuestion.alt[articleQuestion.correta],
+  'o feijão e a farinha',
+  '3º ano com gabarito incorreto na questão sobre artigos e gênero'
+);
 
 const fourth = joined('port-4ano-ago26');
 for (const pattern of [
