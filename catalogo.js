@@ -52,7 +52,7 @@ const CATALOGO = [
     cor: "verde",
     arquivo: "perguntas/port-3ano-ago26.js",
     sorteia: 40,
-    ativo: true,
+    ativo: false,
   },
 
   {
@@ -62,6 +62,39 @@ const CATALOGO = [
     turma: "4º ano",
     cor: "roxo",
     arquivo: "perguntas/port-4ano-ago26.js",
+    sorteia: 40,
+    ativo: false,
+  },
+
+  {
+    id: "cie-3ano-ago26",
+    materia: "Ciências",
+    titulo: "Animais, adaptações e metamorfose",
+    turma: "3º ano",
+    cor: "verde",
+    arquivo: "perguntas/cie-3ano-ago26.js",
+    sorteia: 40,
+    ativo: true,
+  },
+
+  {
+    id: "cie-4ano-ago26",
+    materia: "Ciências",
+    titulo: "Misturas e transformações da matéria",
+    turma: "4º ano",
+    cor: "roxo",
+    arquivo: "perguntas/cie-4ano-ago26.js",
+    sorteia: 40,
+    ativo: true,
+  },
+
+  {
+    id: "ing-4ano-ago26",
+    materia: "Inglês",
+    titulo: "Unit 4, actions, routines and time",
+    turma: "4º ano",
+    cor: "roxo",
+    arquivo: "perguntas/ing-4ano-ago26.js",
     sorteia: 40,
     ativo: true,
   },

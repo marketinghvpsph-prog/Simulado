@@ -33,6 +33,9 @@ const required = [
   'geo-4ano-ago26',
   'port-3ano-ago26',
   'port-4ano-ago26',
+  'cie-3ano-ago26',
+  'cie-4ano-ago26',
+  'ing-4ano-ago26',
 ];
 
 for (const id of required) {
@@ -43,21 +46,24 @@ assert.strictEqual(new Set(ids).size, ids.length, 'ids duplicados no catálogo')
 const byId = Object.fromEntries(catalog.map((item) => [item.id, item]));
 assert.strictEqual(byId['geo-3ano-ago26'].ativo, false, 'Geografia do 3º ano deve permanecer em Provas anteriores');
 assert.strictEqual(byId['geo-4ano-ago26'].ativo, false, 'Geografia do 4º ano deve permanecer em Provas anteriores');
-assert.strictEqual(byId['port-3ano-ago26'].ativo, true, 'Português do 3º ano deve ficar em destaque');
-assert.strictEqual(byId['port-4ano-ago26'].ativo, true, 'Português do 4º ano deve ficar em destaque');
+assert.strictEqual(byId['port-3ano-ago26'].ativo, false, 'Português do 3º ano deve permanecer em Provas anteriores');
+assert.strictEqual(byId['port-4ano-ago26'].ativo, false, 'Português do 4º ano deve permanecer em Provas anteriores');
+assert.strictEqual(byId['cie-3ano-ago26'].ativo, true, 'Ciências do 3º ano deve ficar em destaque');
+assert.strictEqual(byId['cie-4ano-ago26'].ativo, true, 'Ciências do 4º ano deve ficar em destaque');
+assert.strictEqual(byId['ing-4ano-ago26'].ativo, true, 'Inglês do 4º ano deve ficar em destaque');
 
 const indexHtml = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 assert(indexHtml.includes('<script src="config.js"></script>'), 'index.html não carrega config.js');
 assert(indexHtml.includes('<script src="catalogo.js"></script>'), 'index.html não carrega catalogo.js');
 assert(indexHtml.includes('window.registrarPerguntas'), 'index.html não registra bancos de perguntas');
 
+const newIds = new Set(['cie-3ano-ago26', 'cie-4ano-ago26', 'ing-4ano-ago26']);
 for (const item of catalog) {
   const questions = loadQuestions(item.arquivo, item.id);
   assert(questions.length >= item.sorteia, `${item.id}: sorteia mais perguntas do que possui`);
-  if (item.id.startsWith('port-')) {
+  if (newIds.has(item.id)) {
     assert.strictEqual(questions.length, 50, `${item.id}: deve ter 50 questões`);
     assert.strictEqual(item.sorteia, 40, `${item.id}: deve sortear 40 questões`);
-    assert.strictEqual(item.materia, 'Português', `${item.id}: matéria incorreta`);
     assert.strictEqual(item.ativo, true, `${item.id}: deve aparecer na tela inicial`);
   }
   const prompts = new Set();
