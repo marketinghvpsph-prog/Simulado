@@ -28,4 +28,9 @@ jobs:
           for arquivo in perguntas/*.js; do node --check "$arquivo"; done
 
       - name: Validar catálogo e bancos de questões
-        run: node tests/validate-catalog.js
+        run: |
+          node tests/validate-catalog.js
+          node tests/validate-port-out26.js
+          VERCEL_ENV=preview node scripts/build-static.js
+          VERCEL_ENV=production node scripts/build-static.js
+          cmp index.html public/index.html

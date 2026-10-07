@@ -21,6 +21,26 @@
 // ============================================================
 
 const CATALOGO = [
+  {
+    id: "port-4ano-out26",
+    materia: "Português",
+    titulo: "Poemas, interpretação, encontros vocálicos e ortografia",
+    turma: "4º ano",
+    cor: "roxo",
+    arquivo: "perguntas/port-4ano-out26.js",
+    sorteia: 40,
+    ativo: true,
+  },
+  {
+    id: "port-3ano-out26",
+    materia: "Português",
+    titulo: "Interpretação, personagens e sílaba tônica",
+    turma: "3º ano",
+    cor: "verde",
+    arquivo: "perguntas/port-3ano-out26.js",
+    sorteia: 40,
+    ativo: true,
+  },
 
   {
     id: "geo-3ano-ago26",
